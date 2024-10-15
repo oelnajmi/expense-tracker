@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.0",
+    "@neondatabase/serverless": "^0.10.1",
     "@next/swc-wasm-nodejs": "13.5.1",
     "@radix-ui/react-accordion": "^1.2.0",
     "@radix-ui/react-alert-dialog": "^1.1.1",
@@ -46,6 +47,8 @@
     "clsx": "^2.1.1",
     "cmdk": "^1.0.0",
     "date-fns": "^3.6.0",
+    "dotenv": "^16.4.5",
+    "drizzle-orm": "^0.34.1",
     "embla-carousel-react": "^8.3.0",
     "eslint": "8.49.0",
     "eslint-config-next": "13.5.1",
@@ -68,5 +71,8 @@
     "typescript": "5.2.2",
     "vaul": "^0.9.9",
     "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "drizzle-kit": "^0.25.0"
   }
 }
