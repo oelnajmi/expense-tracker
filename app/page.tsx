@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { PieChart } from "lucide-react";
+import SignIn from "@/components/SignIn";
 
 export default function LandingPage() {
   return (
@@ -17,7 +18,8 @@ export default function LandingPage() {
           >
             Tracker
           </Link>
-          <Button className="bg-black text-white">Log In</Button>
+          {/* <Button className="bg-black text-white">Log In</Button> */}
+          <SignIn />
         </nav>
       </header>
       <main className="flex-1">
