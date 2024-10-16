@@ -20,7 +20,6 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { PlusIcon } from "lucide-react";
-import { Separator } from "@/components/ui/separator";
 
 export default function ExpenseDashboard() {
   const [expenses, setExpenses] = useState<Expense[]>([]);
@@ -66,57 +65,42 @@ export default function ExpenseDashboard() {
   }, [expenses]);
 
   return (
-    <div className="min-h-screen bg-white">
-      <div className="container mx-auto">
-        <header className="py-6">
-          <h1 className="text-3xl font-bold">Hello, User</h1>
-          <p className="text-gray-500">
-            {new Date().toLocaleDateString("en-US", {
-              weekday: "long",
-              year: "numeric",
-              month: "long",
-              day: "numeric",
-            })}
-          </p>
-        </header>
-        <Separator className="mb-6 bg-gray-200" />
-        <div className="grid gap-4">
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle>Expense List</CardTitle>
-              <CardDescription>
-                Total Expenses: ${totalExpenses.toFixed(2)}
-              </CardDescription>
-              <Button
-                variant="outline"
-                size="icon"
-                onClick={() => setIsDialogOpen(true)}
-              >
-                <PlusIcon className="h-4 w-4" />
-              </Button>
-            </CardHeader>
-            <CardContent>
-              <ExpenseList
-                expenses={expenses}
-                onUpdateExpense={updateExpense}
-                onDeleteExpense={deleteExpense}
-              />
-            </CardContent>
-          </Card>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <ExpenseDistribution pieChartData={pieChartData} />
-            <Card>
-              <CardHeader>
-                <CardTitle>Subscription Calendar</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <SimplifiedCalendar expenses={expenses} />
-              </CardContent>
-            </Card>
-          </div>
-          <FinancialSummary totalExpenses={totalExpenses} />
-        </div>
+    <div className="grid gap-4">
+      <Card>
+        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+          <CardTitle>Expense List</CardTitle>
+          <CardDescription>
+            Total Expenses: ${totalExpenses.toFixed(2)}
+          </CardDescription>
+          <Button
+            variant="outline"
+            size="icon"
+            onClick={() => setIsDialogOpen(true)}
+          >
+            <PlusIcon className="h-4 w-4" />
+          </Button>
+        </CardHeader>
+        <CardContent>
+          <ExpenseList
+            expenses={expenses}
+            onUpdateExpense={updateExpense}
+            onDeleteExpense={deleteExpense}
+          />
+        </CardContent>
+      </Card>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <ExpenseDistribution pieChartData={pieChartData} />
+        <Card>
+          <CardHeader>
+            <CardTitle>Subscription Calendar</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <SimplifiedCalendar expenses={expenses} />
+          </CardContent>
+        </Card>
       </div>
+      <FinancialSummary totalExpenses={totalExpenses} />
+
       <AddExpenseDialog
         isOpen={isDialogOpen}
         onClose={() => setIsDialogOpen(false)}
