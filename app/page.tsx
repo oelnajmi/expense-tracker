@@ -2,8 +2,14 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { PieChart } from "lucide-react";
 import SignIn from "@/components/SignIn";
+import { useSession } from "next-auth/react";
+import SignOut from "@/components/SignOut";
+import { auth } from "@/auth";
 
-export default function LandingPage() {
+export default async function LandingPage() {
+  // const { data: session } = useSession();
+  const session = await auth();
+
   return (
     <div className="flex flex-col min-h-screen">
       <header className="px-4 lg:px-6 h-14 flex items-center">
@@ -18,8 +24,7 @@ export default function LandingPage() {
           >
             Tracker
           </Link>
-          {/* <Button className="bg-black text-white">Log In</Button> */}
-          <SignIn />
+          {session ? <SignOut /> : <SignIn />}
         </nav>
       </header>
       <main className="flex-1">
