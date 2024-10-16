@@ -15,12 +15,12 @@ import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { PlusIcon } from "lucide-react";
+import { Separator } from "@/components/ui/separator";
 
 export default function ExpenseDashboard() {
   const [expenses, setExpenses] = useState<Expense[]>([]);
@@ -66,12 +66,11 @@ export default function ExpenseDashboard() {
   }, [expenses]);
 
   return (
-    <div className="bg-background text-foreground min-h-screen">
-      <div className="container mx-auto p-4">
-        {/* <h1 className="text-2xl font-bold mb-4">Expense Dashboard</h1> */}
-        <header className="p-6">
+    <div className="min-h-screen bg-white">
+      <div className="container mx-auto">
+        <header className="py-6">
           <h1 className="text-3xl font-bold">Hello, User</h1>
-          <p className="text-gray-400">
+          <p className="text-gray-500">
             {new Date().toLocaleDateString("en-US", {
               weekday: "long",
               year: "numeric",
@@ -80,8 +79,9 @@ export default function ExpenseDashboard() {
             })}
           </p>
         </header>
+        <Separator className="mb-6 bg-gray-200" />
         <div className="grid gap-4">
-          <Card className="border-none">
+          <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle>Expense List</CardTitle>
               <CardDescription>
@@ -105,7 +105,7 @@ export default function ExpenseDashboard() {
           </Card>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <ExpenseDistribution pieChartData={pieChartData} />
-            <Card className="border-none">
+            <Card>
               <CardHeader>
                 <CardTitle>Subscription Calendar</CardTitle>
               </CardHeader>

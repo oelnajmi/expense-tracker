@@ -77,7 +77,7 @@ export default function AddExpenseDialog({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent>
+      <DialogContent className="bg-white sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle>Add Expense</DialogTitle>
           <DialogDescription>
@@ -122,9 +122,13 @@ export default function AddExpenseDialog({
               <SelectTrigger className="col-span-3">
                 <SelectValue placeholder="Select expense type" />
               </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="monthly">Monthly</SelectItem>
-                <SelectItem value="subscription">Subscription</SelectItem>
+              <SelectContent className="bg-white">
+                <SelectItem value="monthly" className="hover:bg-gray-100">
+                  Monthly
+                </SelectItem>
+                <SelectItem value="subscription" className="hover:bg-gray-100">
+                  Subscription
+                </SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -143,9 +147,13 @@ export default function AddExpenseDialog({
                   <SelectTrigger className="col-span-3">
                     <SelectValue placeholder="Select category" />
                   </SelectTrigger>
-                  <SelectContent>
+                  <SelectContent className="bg-white">
                     {categories.map((cat) => (
-                      <SelectItem key={cat} value={cat}>
+                      <SelectItem
+                        key={cat}
+                        value={cat}
+                        className="hover:bg-gray-100"
+                      >
                         {cat}
                       </SelectItem>
                     ))}
@@ -183,9 +191,13 @@ export default function AddExpenseDialog({
                 <SelectTrigger className="col-span-3">
                   <SelectValue placeholder="Select day" />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent className="bg-white">
                   {Array.from({ length: 31 }, (_, i) => i + 1).map((day) => (
-                    <SelectItem key={day} value={day.toString()}>
+                    <SelectItem
+                      key={day}
+                      value={day.toString()}
+                      className="hover:bg-gray-100"
+                    >
                       {day}
                     </SelectItem>
                   ))}

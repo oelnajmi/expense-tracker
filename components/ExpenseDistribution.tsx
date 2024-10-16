@@ -3,20 +3,15 @@
 import React from "react";
 import { PieChart, Pie, Cell, ResponsiveContainer, Legend } from "recharts";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import {
-  ChartContainer,
-  ChartTooltip,
-  ChartTooltipContent,
-} from "@/components/ui/chart";
 
 const COLORS = [
-  "hsl(var(--chart-1))",
-  "hsl(var(--chart-2))",
-  "hsl(var(--chart-3))",
-  "hsl(var(--chart-4))",
-  "hsl(var(--chart-5))",
-  "hsl(var(--chart-6))",
-  "hsl(var(--chart-7))",
+  "#FF6384",
+  "#36A2EB",
+  "#FFCE56",
+  "#4BC0C0",
+  "#9966FF",
+  "#FF9F40",
+  "#FF6384",
 ];
 
 interface ExpenseDistributionProps {
@@ -27,28 +22,12 @@ export default function ExpenseDistribution({
   pieChartData,
 }: ExpenseDistributionProps) {
   return (
-    <Card className="border-none">
+    <Card>
       <CardHeader>
         <CardTitle>Expense Distribution</CardTitle>
       </CardHeader>
       <CardContent>
-        <ChartContainer
-          config={Object.fromEntries(
-            [
-              "Food",
-              "Transportation",
-              "Housing",
-              "Utilities",
-              "Entertainment",
-              "Subscription",
-              "Other",
-            ].map((category, index) => [
-              category,
-              { label: category, color: COLORS[index] },
-            ])
-          )}
-          className="h-[300px]"
-        >
+        <div className="h-[300px]">
           <ResponsiveContainer width="100%" height="100%">
             <PieChart>
               <Pie
@@ -68,10 +47,9 @@ export default function ExpenseDistribution({
                 ))}
               </Pie>
               <Legend />
-              <ChartTooltip content={<ChartTooltipContent />} />
             </PieChart>
           </ResponsiveContainer>
-        </ChartContainer>
+        </div>
       </CardContent>
     </Card>
   );
