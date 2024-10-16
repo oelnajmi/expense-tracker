@@ -1,9 +1,13 @@
-"use client"
+"use client";
 
-import React from 'react'
-import { PieChart, Pie, Cell, ResponsiveContainer, Legend } from "recharts"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart"
+import React from "react";
+import { PieChart, Pie, Cell, ResponsiveContainer, Legend } from "recharts";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  ChartContainer,
+  ChartTooltip,
+  ChartTooltipContent,
+} from "@/components/ui/chart";
 
 const COLORS = [
   "hsl(var(--chart-1))",
@@ -13,22 +17,32 @@ const COLORS = [
   "hsl(var(--chart-5))",
   "hsl(var(--chart-6))",
   "hsl(var(--chart-7))",
-]
+];
 
 interface ExpenseDistributionProps {
-  pieChartData: { name: string; value: number }[]
+  pieChartData: { name: string; value: number }[];
 }
 
-export default function ExpenseDistribution({ pieChartData }: ExpenseDistributionProps) {
+export default function ExpenseDistribution({
+  pieChartData,
+}: ExpenseDistributionProps) {
   return (
-    <Card>
+    <Card className="border-none">
       <CardHeader>
         <CardTitle>Expense Distribution</CardTitle>
       </CardHeader>
       <CardContent>
         <ChartContainer
           config={Object.fromEntries(
-            ["Food", "Transportation", "Housing", "Utilities", "Entertainment", "Subscription", "Other"].map((category, index) => [
+            [
+              "Food",
+              "Transportation",
+              "Housing",
+              "Utilities",
+              "Entertainment",
+              "Subscription",
+              "Other",
+            ].map((category, index) => [
               category,
               { label: category, color: COLORS[index] },
             ])
@@ -47,7 +61,10 @@ export default function ExpenseDistribution({ pieChartData }: ExpenseDistributio
                 dataKey="value"
               >
                 {pieChartData.map((entry, index) => (
-                  <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                  <Cell
+                    key={`cell-${index}`}
+                    fill={COLORS[index % COLORS.length]}
+                  />
                 ))}
               </Pie>
               <Legend />
@@ -57,5 +74,5 @@ export default function ExpenseDistribution({ pieChartData }: ExpenseDistributio
         </ChartContainer>
       </CardContent>
     </Card>
-  )
+  );
 }

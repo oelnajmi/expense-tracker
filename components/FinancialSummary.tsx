@@ -1,44 +1,48 @@
-"use client"
+"use client";
 
-import React, { useState, useMemo } from 'react'
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
+import React, { useState, useMemo } from "react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 
 interface FinancialSummaryProps {
-  totalExpenses: number
+  totalExpenses: number;
 }
 
-export default function FinancialSummary({ totalExpenses }: FinancialSummaryProps) {
-  const [monthlyIncome, setMonthlyIncome] = useState<string>('')
-  const [savingsPercentage, setSavingsPercentage] = useState<number>(0)
+export default function FinancialSummary({
+  totalExpenses,
+}: FinancialSummaryProps) {
+  const [monthlyIncome, setMonthlyIncome] = useState<string>("");
+  const [savingsPercentage, setSavingsPercentage] = useState<number>(0);
 
-  const handleMonthlyIncomeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value.replace(/^0+/, '');
-    if (value === '' || /^\d+$/.test(value)) {
+  const handleMonthlyIncomeChange = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const value = e.target.value.replace(/^0+/, "");
+    if (value === "" || /^\d+$/.test(value)) {
       setMonthlyIncome(value);
     }
   };
 
   const financialMetrics = useMemo(() => {
     const income = parseFloat(monthlyIncome) || 0;
-    const savingsAmount = (income * savingsPercentage) / 100
-    const netIncome = income - totalExpenses
-    const remainingAmount = netIncome - savingsAmount
-    const biweeklySavings = (savingsAmount / 2).toFixed(2)
-    const yearlySavings = (savingsAmount * 12).toFixed(2)
+    const savingsAmount = (income * savingsPercentage) / 100;
+    const netIncome = income - totalExpenses;
+    const remainingAmount = netIncome - savingsAmount;
+    const biweeklySavings = (savingsAmount / 2).toFixed(2);
+    const yearlySavings = (savingsAmount * 12).toFixed(2);
 
     return {
       netIncome: netIncome.toFixed(2),
       savingsAmount: savingsAmount.toFixed(2),
       remainingAmount: remainingAmount.toFixed(2),
       biweeklySavings,
-      yearlySavings
-    }
-  }, [monthlyIncome, savingsPercentage, totalExpenses])
+      yearlySavings,
+    };
+  }, [monthlyIncome, savingsPercentage, totalExpenses]);
 
   return (
-    <Card className="mt-4">
+    <Card className="mt-4 border-none">
       <CardHeader>
         <CardTitle>Financial Summary</CardTitle>
       </CardHeader>
@@ -79,10 +83,11 @@ export default function FinancialSummary({ totalExpenses }: FinancialSummaryProp
           <div>${financialMetrics.remainingAmount}</div>
         </div>
         <p className="mt-4 text-sm">
-          To meet your saving goals, you would need to save ${financialMetrics.biweeklySavings} every two weeks. 
-          This would result in ${financialMetrics.yearlySavings} saved per year.
+          To meet your saving goals, you would need to save $
+          {financialMetrics.biweeklySavings} every two weeks. This would result
+          in ${financialMetrics.yearlySavings} saved per year.
         </p>
       </CardContent>
     </Card>
-  )
+  );
 }
