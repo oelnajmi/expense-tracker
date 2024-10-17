@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { PlusIcon } from "lucide-react";
+import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 
 interface ExpenseListSectionProps {
   expenses: Expense[];
@@ -36,8 +37,6 @@ export default function ExpenseListSection({
   onAddCategory,
   userId,
 }: ExpenseListSectionProps) {
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
-
   return (
     <Card>
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -45,13 +44,19 @@ export default function ExpenseListSection({
         <CardDescription>
           Total Expenses: ${totalExpenses.toFixed(2)}
         </CardDescription>
-        <Button
-          variant="outline"
-          size="icon"
-          onClick={() => setIsDialogOpen(true)}
-        >
-          <PlusIcon className="h-4 w-4" />
-        </Button>
+        <Dialog>
+          <DialogTrigger asChild>
+            <Button variant="outline" size="icon">
+              <PlusIcon className="h-4 w-4" />
+            </Button>
+          </DialogTrigger>
+          <AddExpenseDialog
+            onAddExpense={onAddExpense}
+            categories={categories}
+            onAddCategory={onAddCategory}
+            userId={userId || ""}
+          />
+        </Dialog>
       </CardHeader>
       <CardContent>
         <ExpenseList
@@ -60,14 +65,6 @@ export default function ExpenseListSection({
           onDeleteExpense={onDeleteExpense}
         />
       </CardContent>
-      <AddExpenseDialog
-        isOpen={isDialogOpen}
-        onClose={() => setIsDialogOpen(false)}
-        onAddExpense={onAddExpense}
-        categories={categories}
-        onAddCategory={onAddCategory}
-        userId={userId || ""}
-      />
     </Card>
   );
 }

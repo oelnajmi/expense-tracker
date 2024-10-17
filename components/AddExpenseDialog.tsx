@@ -2,7 +2,6 @@
 
 import React, { useState } from "react";
 import {
-  Dialog,
   DialogContent,
   DialogDescription,
   DialogFooter,
@@ -23,8 +22,6 @@ import { ExpenseCategory } from "@/types/expense";
 import { NewExpense } from "@/db/schema";
 
 interface AddExpenseDialogProps {
-  isOpen: boolean;
-  onClose: () => void;
   onAddExpense: (expense: NewExpense) => void;
   categories: ExpenseCategory[];
   onAddCategory: (category: string) => void;
@@ -32,8 +29,6 @@ interface AddExpenseDialogProps {
 }
 
 export default function AddExpenseDialog({
-  isOpen,
-  onClose,
   onAddExpense,
   categories,
   onAddCategory,
@@ -79,150 +74,146 @@ export default function AddExpenseDialog({
   };
 
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="bg-white sm:max-w-[425px]">
-        <DialogHeader>
-          <DialogTitle>Add Expense</DialogTitle>
-          <DialogDescription>
-            Enter the details of your new expense here. Click save when youre
-            done.
-          </DialogDescription>
-        </DialogHeader>
-        <div className="grid gap-4 py-4">
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="name" className="text-right">
-              Name
-            </Label>
-            <Input
-              id="name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              className="col-span-3"
-            />
-          </div>
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="amount" className="text-right">
-              Amount
-            </Label>
-            <Input
-              id="amount"
-              type="text"
-              value={amount}
-              onChange={(e) => setAmount(e.target.value)}
-              className="col-span-3"
-            />
-          </div>
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="type" className="text-right">
-              Type
-            </Label>
-            <Select
-              value={type}
-              onValueChange={(value) =>
-                setType(value as "monthly" | "subscription")
-              }
-            >
-              <SelectTrigger className="col-span-3">
-                <SelectValue placeholder="Select expense type" />
-              </SelectTrigger>
-              <SelectContent className="bg-white">
-                <SelectItem value="monthly" className="hover:bg-gray-100">
-                  Monthly
-                </SelectItem>
-                <SelectItem value="subscription" className="hover:bg-gray-100">
-                  Subscription
-                </SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-          {type === "monthly" && (
-            <>
-              <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="category" className="text-right">
-                  Category
-                </Label>
-                <Select
-                  value={category}
-                  onValueChange={(value) =>
-                    setCategory(value as ExpenseCategory)
-                  }
-                >
-                  <SelectTrigger className="col-span-3">
-                    <SelectValue placeholder="Select category" />
-                  </SelectTrigger>
-                  <SelectContent className="bg-white">
-                    {categories.map((cat) => (
-                      <SelectItem
-                        key={cat}
-                        value={cat}
-                        className="hover:bg-gray-100"
-                      >
-                        {cat}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-              <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="newCategory" className="text-right">
-                  New Category
-                </Label>
-                <div className="col-span-3 flex gap-2">
-                  <Input
-                    id="newCategory"
-                    value={newCategory}
-                    onChange={(e) => setNewCategory(e.target.value)}
-                    className="flex-grow"
-                    placeholder="Enter new category"
-                  />
-                  <Button
-                    className="bg-black text-white"
-                    type="button"
-                    onClick={handleAddCategory}
-                  >
-                    Add
-                  </Button>
-                </div>
-              </div>
-            </>
-          )}
-          {type === "subscription" && (
+    <DialogContent className="bg-white sm:max-w-[425px]">
+      <DialogHeader>
+        <DialogTitle>Add Expense</DialogTitle>
+        <DialogDescription>
+          Enter the details of your new expense here. Click save when youre
+          done.
+        </DialogDescription>
+      </DialogHeader>
+      <div className="grid gap-4 py-4">
+        <div className="grid grid-cols-4 items-center gap-4">
+          <Label htmlFor="name" className="text-right">
+            Name
+          </Label>
+          <Input
+            id="name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            className="col-span-3"
+          />
+        </div>
+        <div className="grid grid-cols-4 items-center gap-4">
+          <Label htmlFor="amount" className="text-right">
+            Amount
+          </Label>
+          <Input
+            id="amount"
+            type="text"
+            value={amount}
+            onChange={(e) => setAmount(e.target.value)}
+            className="col-span-3"
+          />
+        </div>
+        <div className="grid grid-cols-4 items-center gap-4">
+          <Label htmlFor="type" className="text-right">
+            Type
+          </Label>
+          <Select
+            value={type}
+            onValueChange={(value) =>
+              setType(value as "monthly" | "subscription")
+            }
+          >
+            <SelectTrigger className="col-span-3">
+              <SelectValue placeholder="Select expense type" />
+            </SelectTrigger>
+            <SelectContent className="bg-white">
+              <SelectItem value="monthly" className="hover:bg-gray-100">
+                Monthly
+              </SelectItem>
+              <SelectItem value="subscription" className="hover:bg-gray-100">
+                Subscription
+              </SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+        {type === "monthly" && (
+          <>
             <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="subscriptionDay" className="text-right">
-                Day of Month
+              <Label htmlFor="category" className="text-right">
+                Category
               </Label>
               <Select
-                value={subscriptionDay.toString()}
-                onValueChange={(value) => setSubscriptionDay(parseInt(value))}
+                value={category}
+                onValueChange={(value) => setCategory(value as ExpenseCategory)}
               >
                 <SelectTrigger className="col-span-3">
-                  <SelectValue placeholder="Select day" />
+                  <SelectValue placeholder="Select category" />
                 </SelectTrigger>
                 <SelectContent className="bg-white">
-                  {Array.from({ length: 31 }, (_, i) => i + 1).map((day) => (
+                  {categories.map((cat) => (
                     <SelectItem
-                      key={day}
-                      value={day.toString()}
+                      key={cat}
+                      value={cat}
                       className="hover:bg-gray-100"
                     >
-                      {day}
+                      {cat}
                     </SelectItem>
                   ))}
                 </SelectContent>
               </Select>
             </div>
-          )}
-        </div>
-        <DialogFooter>
-          <Button
-            className="bg-black text-white"
-            type="submit"
-            onClick={handleAddExpense}
-          >
-            Save expense
-          </Button>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
+            <div className="grid grid-cols-4 items-center gap-4">
+              <Label htmlFor="newCategory" className="text-right">
+                New Category
+              </Label>
+              <div className="col-span-3 flex gap-2">
+                <Input
+                  id="newCategory"
+                  value={newCategory}
+                  onChange={(e) => setNewCategory(e.target.value)}
+                  className="flex-grow"
+                  placeholder="Enter new category"
+                />
+                <Button
+                  className="bg-black text-white"
+                  type="button"
+                  onClick={handleAddCategory}
+                >
+                  Add
+                </Button>
+              </div>
+            </div>
+          </>
+        )}
+        {type === "subscription" && (
+          <div className="grid grid-cols-4 items-center gap-4">
+            <Label htmlFor="subscriptionDay" className="text-right">
+              Day of Month
+            </Label>
+            <Select
+              value={subscriptionDay.toString()}
+              onValueChange={(value) => setSubscriptionDay(parseInt(value))}
+            >
+              <SelectTrigger className="col-span-3">
+                <SelectValue placeholder="Select day" />
+              </SelectTrigger>
+              <SelectContent className="bg-white">
+                {Array.from({ length: 31 }, (_, i) => i + 1).map((day) => (
+                  <SelectItem
+                    key={day}
+                    value={day.toString()}
+                    className="hover:bg-gray-100"
+                  >
+                    {day}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+        )}
+      </div>
+      <DialogFooter>
+        <Button
+          className="bg-black text-white"
+          type="submit"
+          onClick={handleAddExpense}
+        >
+          Save expense
+        </Button>
+      </DialogFooter>
+    </DialogContent>
   );
 }
