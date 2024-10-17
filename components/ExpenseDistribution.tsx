@@ -1,7 +1,14 @@
 "use client";
 
 import React from "react";
-import { PieChart, Pie, Cell, ResponsiveContainer, Legend } from "recharts";
+import {
+  PieChart,
+  Pie,
+  Cell,
+  ResponsiveContainer,
+  Legend,
+  Tooltip,
+} from "recharts";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 const COLORS = [
@@ -17,6 +24,18 @@ const COLORS = [
 interface ExpenseDistributionProps {
   pieChartData: { name: string; value: number }[];
 }
+
+const CustomTooltip = ({ active, payload }: any) => {
+  if (active && payload && payload.length) {
+    return (
+      <div className="bg-white p-2 border rounded shadow">
+        <p className="font-semibold">{payload[0].name}</p>
+        <p>${payload[0].value.toFixed(2)}</p>
+      </div>
+    );
+  }
+  return null;
+};
 
 export default function ExpenseDistribution({
   pieChartData,
@@ -46,6 +65,7 @@ export default function ExpenseDistribution({
                   />
                 ))}
               </Pie>
+              <Tooltip content={<CustomTooltip />} />
               <Legend />
             </PieChart>
           </ResponsiveContainer>

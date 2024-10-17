@@ -1,10 +1,17 @@
 "use client";
 
 import React from "react";
-import { Expense } from "@/types/expense";
+import { DrizzleExpense } from "@/db/schema";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 
 interface SimplifiedCalendarProps {
-  expenses: Expense[];
+  expenses: DrizzleExpense[];
 }
 
 export default function SimplifiedCalendar({
@@ -20,23 +27,48 @@ export default function SimplifiedCalendar({
         );
 
         return (
-          <div
-            key={day}
-            className={`relative flex items-center justify-center h-10 rounded-full ${
-              subscriptions.length > 0
-                ? "bg-blue-500 text-white"
-                : "bg-gray-100 hover:bg-gray-200"
-            } group`}
-          >
-            {day}
+          <div key={day} className="relative group cursor-pointer">
+            <div
+              className={`flex items-center justify-center h-10 rounded-full ${
+                subscriptions.length > 0
+                  ? "bg-blue-500 text-white"
+                  : "bg-gray-100 hover:bg-gray-200"
+              }`}
+            >
+              {day}
+            </div>
             {subscriptions.length > 0 && (
-              <div className="absolute z-10 hidden group-hover:block bg-white border rounded-md p-2 shadow-lg -mt-2 left-full ml-2">
-                {subscriptions.map((sub) => (
-                  <div key={sub.id} className="text-sm">
-                    {sub.name}: ${sub.amount.toFixed(2)}
+              <Card className="absolute z-10 hidden group-hover:block bg-white border rounded-md shadow-lg -mt-2 left-full ml-2 w-64">
+                <CardHeader className="p-3">
+                  <CardTitle className="text-sm">Day {day} Expenses</CardTitle>
+                  <CardDescription className="text-xs">
+                    {subscriptions.length} subscription
+                    {subscriptions.length !== 1 ? "s" : ""}
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="p-3">
+                  {subscriptions.map((sub) => (
+                    <div
+                      key={sub.id}
+                      className="text-sm flex justify-between items-center mb-1"
+                    >
+                      <span>{sub.name}</span>
+                      <span className="font-semibold">
+                        ${parseFloat(sub.amount).toFixed(2)}
+                      </span>
+                    </div>
+                  ))}
+                  <div className="text-sm font-bold flex justify-between items-center mt-2 pt-2 border-t">
+                    <span>Total</span>
+                    <span>
+                      $
+                      {subscriptions
+                        .reduce((sum, sub) => sum + parseFloat(sub.amount), 0)
+                        .toFixed(2)}
+                    </span>
                   </div>
-                ))}
-              </div>
+                </CardContent>
+              </Card>
             )}
           </div>
         );

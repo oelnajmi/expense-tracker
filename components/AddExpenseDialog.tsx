@@ -19,14 +19,16 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Expense, ExpenseCategory } from "@/types/expense";
+import { ExpenseCategory } from "@/types/expense";
+import { NewExpense, DrizzleExpense } from "@/db/schema";
 
 interface AddExpenseDialogProps {
   isOpen: boolean;
   onClose: () => void;
-  onAddExpense: (expense: Expense) => void;
+  onAddExpense: (expense: NewExpense) => void;
   categories: ExpenseCategory[];
   onAddCategory: (category: string) => void;
+  userId: string;
 }
 
 export default function AddExpenseDialog({
@@ -35,6 +37,7 @@ export default function AddExpenseDialog({
   onAddExpense,
   categories,
   onAddCategory,
+  userId,
 }: AddExpenseDialogProps) {
   const [name, setName] = useState("");
   const [amount, setAmount] = useState("");
@@ -45,13 +48,13 @@ export default function AddExpenseDialog({
 
   const handleAddExpense = () => {
     if (name && amount) {
-      const newExpense: Expense = {
-        id: Math.random().toString(36).substr(2, 9),
+      const newExpense: NewExpense = {
         name,
-        amount: parseFloat(amount),
+        amount,
         type,
         category: type === "subscription" ? "Subscription" : category,
-        subscriptionDay: type === "subscription" ? subscriptionDay : undefined,
+        subscriptionDay: type === "subscription" ? subscriptionDay : null,
+        userId,
       };
       onAddExpense(newExpense);
       resetForm();
@@ -103,7 +106,7 @@ export default function AddExpenseDialog({
             </Label>
             <Input
               id="amount"
-              type="number"
+              type="text"
               value={amount}
               onChange={(e) => setAmount(e.target.value)}
               className="col-span-3"
@@ -172,7 +175,11 @@ export default function AddExpenseDialog({
                     className="flex-grow"
                     placeholder="Enter new category"
                   />
-                  <Button type="button" onClick={handleAddCategory}>
+                  <Button
+                    className="bg-black text-white"
+                    type="button"
+                    onClick={handleAddCategory}
+                  >
                     Add
                   </Button>
                 </div>
@@ -207,7 +214,11 @@ export default function AddExpenseDialog({
           )}
         </div>
         <DialogFooter>
-          <Button type="submit" onClick={handleAddExpense}>
+          <Button
+            className="bg-black text-white"
+            type="submit"
+            onClick={handleAddExpense}
+          >
             Save expense
           </Button>
         </DialogFooter>
