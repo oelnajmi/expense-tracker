@@ -1,10 +1,17 @@
 import { useState } from "react";
-import { DrizzleExpense, NewExpense } from "@/db/schema";
-import { addExpense, updateExpense, deleteExpense } from "@/app/actions/expense";
+import { Expense, NewExpense } from "@/db/schema";
+import {
+  addExpense,
+  updateExpense,
+  deleteExpense,
+} from "@/app/actions/expense";
 import { useToast } from "@/hooks/use-toast";
 
-export function useExpenses(initialExpenses: DrizzleExpense[], userId: string | undefined) {
-  const [expenses, setExpenses] = useState<DrizzleExpense[]>(initialExpenses);
+export function useExpenses(
+  initialExpenses: Expense[],
+  userId: string | undefined
+) {
+  const [expenses, setExpenses] = useState<Expense[]>(initialExpenses);
   const isLoggedIn = Boolean(userId);
   const { toast } = useToast();
 
@@ -22,11 +29,12 @@ export function useExpenses(initialExpenses: DrizzleExpense[], userId: string | 
         toast({
           variant: "destructive",
           title: "Error",
-          description: result.error || "Failed to add expense. Please try again.",
+          description:
+            result.error || "Failed to add expense. Please try again.",
         });
       }
     } else {
-      const tempExpense: DrizzleExpense = {
+      const tempExpense: Expense = {
         ...newExpense,
         id: Math.random().toString(36).substr(2, 9),
         userId: "temp",
@@ -37,16 +45,19 @@ export function useExpenses(initialExpenses: DrizzleExpense[], userId: string | 
       setExpenses([...expenses, tempExpense]);
       toast({
         title: "Expense added locally",
-        description: "Your expense has been added locally. Sign in to sync with the server.",
+        description:
+          "Your expense has been added locally. Sign in to sync with the server.",
       });
     }
   };
 
-  const handleUpdateExpense = async (updatedExpense: DrizzleExpense) => {
+  const handleUpdateExpense = async (updatedExpense: Expense) => {
     if (isLoggedIn) {
       const result = await updateExpense(updatedExpense);
       if (result.success && result.expense) {
-        setExpenses(expenses.map((e) => (e.id === result.expense.id ? result.expense : e)));
+        setExpenses(
+          expenses.map((e) => (e.id === result.expense.id ? result.expense : e))
+        );
         toast({
           title: "Expense updated",
           description: "Your expense has been successfully updated.",
@@ -55,14 +66,18 @@ export function useExpenses(initialExpenses: DrizzleExpense[], userId: string | 
         toast({
           variant: "destructive",
           title: "Error",
-          description: result.error || "Failed to update expense. Please try again.",
+          description:
+            result.error || "Failed to update expense. Please try again.",
         });
       }
     } else {
-      setExpenses(expenses.map((e) => (e.id === updatedExpense.id ? updatedExpense : e)));
+      setExpenses(
+        expenses.map((e) => (e.id === updatedExpense.id ? updatedExpense : e))
+      );
       toast({
         title: "Expense updated locally",
-        description: "Your expense has been updated locally. Sign in to sync with the server.",
+        description:
+          "Your expense has been updated locally. Sign in to sync with the server.",
       });
     }
   };
@@ -80,17 +95,24 @@ export function useExpenses(initialExpenses: DrizzleExpense[], userId: string | 
         toast({
           variant: "destructive",
           title: "Error",
-          description: result.error || "Failed to delete expense. Please try again.",
+          description:
+            result.error || "Failed to delete expense. Please try again.",
         });
       }
     } else {
       setExpenses(expenses.filter((e) => e.id !== id));
       toast({
         title: "Expense deleted locally",
-        description: "Your expense has been deleted locally. Sign in to sync with the server.",
+        description:
+          "Your expense has been deleted locally. Sign in to sync with the server.",
       });
     }
   };
 
-  return { expenses, handleAddExpense, handleUpdateExpense, handleDeleteExpense };
+  return {
+    expenses,
+    handleAddExpense,
+    handleUpdateExpense,
+    handleDeleteExpense,
+  };
 }

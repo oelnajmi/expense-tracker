@@ -104,5 +104,5 @@ export const expenses = pgTable("expense", {
 });
 
 // Type definitions for expenses table
-export type DrizzleExpense = InferSelectModel<typeof expenses>;
+export type Expense = InferSelectModel<typeof expenses>;
 export type NewExpense = InferInsertModel<typeof expenses>;

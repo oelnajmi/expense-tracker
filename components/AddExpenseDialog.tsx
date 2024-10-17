@@ -20,7 +20,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { ExpenseCategory } from "@/types/expense";
-import { NewExpense, DrizzleExpense } from "@/db/schema";
+import { NewExpense } from "@/db/schema";
 
 interface AddExpenseDialogProps {
   isOpen: boolean;

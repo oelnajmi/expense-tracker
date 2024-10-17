@@ -3,7 +3,7 @@ import DashboardHeader from "@/components/DashboardHeader";
 import ExpenseDashboard from "@/components/ExpenseDashboard";
 import { Separator } from "@/components/ui/separator";
 import { db } from "@/db/drizzle";
-import { DrizzleExpense, expenses } from "@/db/schema";
+import { Expense, expenses } from "@/db/schema";
 import { eq } from "drizzle-orm";
 
 async function getExpenses(userId: string) {
@@ -17,7 +17,7 @@ async function getExpenses(userId: string) {
 
 export default async function DashboardPage() {
   const session = await auth();
-  let userExpenses: DrizzleExpense[] = [];
+  let userExpenses: Expense[] = [];
 
   if (session?.user?.id) {
     userExpenses = await getExpenses(session.user.id);

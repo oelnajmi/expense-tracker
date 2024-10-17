@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { DrizzleExpense } from "@/db/schema";
+import { Expense } from "@/db/schema";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -28,8 +28,8 @@ import {
 } from "@/components/ui/alert-dialog";
 
 interface ExpenseListProps {
-  expenses: DrizzleExpense[];
-  onUpdateExpense: (updatedExpense: DrizzleExpense) => void;
+  expenses: Expense[];
+  onUpdateExpense: (updatedExpense: Expense) => void;
   onDeleteExpense: (id: string) => void;
 }
 
@@ -38,9 +38,7 @@ export default function ExpenseList({
   onUpdateExpense,
   onDeleteExpense,
 }: ExpenseListProps) {
-  const [editingExpense, setEditingExpense] = useState<DrizzleExpense | null>(
-    null
-  );
+  const [editingExpense, setEditingExpense] = useState<Expense | null>(null);
   const [editAmount, setEditAmount] = useState("");
   const [deletingExpenseId, setDeletingExpenseId] = useState<string | null>(
     null

@@ -1,19 +1,25 @@
 "use client";
 
 import { useState } from "react";
-import { DrizzleExpense, NewExpense } from "@/db/schema";
+import { Expense, NewExpense } from "@/db/schema";
 import { ExpenseCategory } from "@/types/expense";
 import ExpenseList from "@/components/ExpenseList";
 import AddExpenseDialog from "@/components/AddExpenseDialog";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { PlusIcon } from "lucide-react";
 
 interface ExpenseListSectionProps {
-  expenses: DrizzleExpense[];
+  expenses: Expense[];
   totalExpenses: number;
   onAddExpense: (newExpense: NewExpense) => void;
-  onUpdateExpense: (updatedExpense: DrizzleExpense) => void;
+  onUpdateExpense: (updatedExpense: Expense) => void;
   onDeleteExpense: (id: string) => void;
   categories: ExpenseCategory[];
   onAddCategory: (newCategory: string) => void;
@@ -36,8 +42,14 @@ export default function ExpenseListSection({
     <Card>
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
         <CardTitle>Expense List</CardTitle>
-        <CardDescription>Total Expenses: ${totalExpenses.toFixed(2)}</CardDescription>
-        <Button variant="outline" size="icon" onClick={() => setIsDialogOpen(true)}>
+        <CardDescription>
+          Total Expenses: ${totalExpenses.toFixed(2)}
+        </CardDescription>
+        <Button
+          variant="outline"
+          size="icon"
+          onClick={() => setIsDialogOpen(true)}
+        >
           <PlusIcon className="h-4 w-4" />
         </Button>
       </CardHeader>

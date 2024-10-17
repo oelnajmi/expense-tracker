@@ -1,7 +1,7 @@
 "use server";
 
 import { db } from "@/db/drizzle";
-import { expenses, DrizzleExpense } from "@/db/schema";
+import { expenses, Expense } from "@/db/schema";
 import { NewExpense } from "@/db/schema";
 import { revalidatePath } from "next/cache";
 import { eq } from "drizzle-orm";
@@ -23,7 +23,7 @@ export async function addExpense(newExpense: NewExpense) {
   }
 }
 
-export async function updateExpense(updatedExpense: DrizzleExpense) {
+export async function updateExpense(updatedExpense: Expense) {
   try {
     const [updated] = await db
       .update(expenses)

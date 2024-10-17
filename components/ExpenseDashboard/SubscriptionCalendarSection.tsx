@@ -1,11 +1,11 @@
 "use client";
 
-import { DrizzleExpense } from "@/db/schema";
+import { Expense } from "@/db/schema";
 import SimplifiedCalendar from "@/components/SimplifiedCalendar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 interface SubscriptionCalendarSectionProps {
-  expenses: DrizzleExpense[];
+  expenses: Expense[];
 }
 
 export default function SubscriptionCalendarSection({ expenses }: SubscriptionCalendarSectionProps) {

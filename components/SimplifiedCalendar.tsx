@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { DrizzleExpense } from "@/db/schema";
+import { Expense } from "@/db/schema";
 import {
   Card,
   CardContent,
@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/card";
 
 interface SimplifiedCalendarProps {
-  expenses: DrizzleExpense[];
+  expenses: Expense[];
 }
 
 export default function SimplifiedCalendar({

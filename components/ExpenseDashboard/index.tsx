@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useMemo } from "react";
-import { DrizzleExpense } from "@/db/schema";
+import { Expense } from "@/db/schema";
 import { useExpenses } from "@/hooks/useExpenses";
 import { useCategories } from "@/hooks/useCategories";
 import ExpenseListSection from "./ExpenseListSection";
@@ -10,7 +10,7 @@ import SubscriptionCalendarSection from "./SubscriptionCalendarSection";
 import FinancialSummarySection from "./FinancialSummarySection";
 
 interface ExpenseDashboardProps {
-  initialExpenses: DrizzleExpense[];
+  initialExpenses: Expense[];
   userId: string | undefined;
 }
 
