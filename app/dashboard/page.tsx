@@ -2,25 +2,17 @@ import { auth } from "@/auth";
 import DashboardHeader from "@/components/DashboardHeader";
 import ExpenseDashboard from "@/components/ExpenseDashboard";
 import { Separator } from "@/components/ui/separator";
-import { db } from "@/db/drizzle";
-import { Expense, expenses } from "@/db/schema";
-import { eq } from "drizzle-orm";
-
-async function getExpenses(userId: string) {
-  const expenseList = await db
-    .select()
-    .from(expenses)
-    .where(eq(expenses.userId, userId));
-
-  return expenseList;
-}
-
+import { getExpenses } from "../actions/expense";
+import { getCategories } from "../actions/category";
+import { Expense, Category } from "@/db/schema";
 export default async function DashboardPage() {
   const session = await auth();
   let userExpenses: Expense[] = [];
+  let userCategories: Category[] = [];
 
   if (session?.user?.id) {
     userExpenses = await getExpenses(session.user.id);
+    userCategories = await getCategories(session.user.id);
   }
 
   return (
@@ -30,6 +22,7 @@ export default async function DashboardPage() {
         <Separator className="mb-6 bg-gray-200" />
         <ExpenseDashboard
           initialExpenses={userExpenses}
+          initialCategories={userCategories}
           userId={session?.user?.id}
         />
       </div>

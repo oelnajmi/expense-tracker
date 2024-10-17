@@ -17,27 +17,25 @@ export function useExpenses(
 
   const handleAddExpense = async (newExpense: NewExpense) => {
     if (isLoggedIn) {
-      const result = await addExpense(newExpense);
-      if (result.success && result.expense) {
-        setExpenses([...expenses, result.expense]);
+      try {
+        const addedExpense = await addExpense(newExpense);
+        setExpenses([...expenses, addedExpense]);
         toast({
           title: "Expense added",
           description: "Your expense has been successfully added.",
         });
-      } else {
-        console.error("Failed to add expense:", result.error);
+      } catch (error) {
+        console.error("Failed to add expense:", error);
         toast({
           variant: "destructive",
           title: "Error",
-          description:
-            result.error || "Failed to add expense. Please try again.",
+          description: "Failed to add expense. Please try again.",
         });
       }
     } else {
       const tempExpense: Expense = {
         ...newExpense,
         id: Math.random().toString(36).substr(2, 9),
-        userId: "temp",
         createdAt: new Date(),
         updatedAt: new Date(),
         subscriptionDay: newExpense.subscriptionDay ?? null,
@@ -53,21 +51,19 @@ export function useExpenses(
 
   const handleUpdateExpense = async (updatedExpense: Expense) => {
     if (isLoggedIn) {
-      const result = await updateExpense(updatedExpense);
-      if (result.success && result.expense) {
-        setExpenses(
-          expenses.map((e) => (e.id === result.expense.id ? result.expense : e))
-        );
+      try {
+        const updated = await updateExpense(updatedExpense.id, updatedExpense);
+        setExpenses(expenses.map((e) => (e.id === updated.id ? updated : e)));
         toast({
           title: "Expense updated",
           description: "Your expense has been successfully updated.",
         });
-      } else {
+      } catch (error) {
+        console.error("Failed to update expense:", error);
         toast({
           variant: "destructive",
           title: "Error",
-          description:
-            result.error || "Failed to update expense. Please try again.",
+          description: "Failed to update expense. Please try again.",
         });
       }
     } else {
@@ -84,19 +80,19 @@ export function useExpenses(
 
   const handleDeleteExpense = async (id: string) => {
     if (isLoggedIn) {
-      const result = await deleteExpense(id);
-      if (result.success) {
+      try {
+        await deleteExpense(id);
         setExpenses(expenses.filter((e) => e.id !== id));
         toast({
           title: "Expense deleted",
           description: "Your expense has been successfully deleted.",
         });
-      } else {
+      } catch (error) {
+        console.error("Failed to delete expense:", error);
         toast({
           variant: "destructive",
           title: "Error",
-          description:
-            result.error || "Failed to delete expense. Please try again.",
+          description: "Failed to delete expense. Please try again.",
         });
       }
     } else {

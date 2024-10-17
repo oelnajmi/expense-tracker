@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useMemo } from "react";
-import { Expense } from "@/db/schema";
+import { useMemo } from "react";
+import { Expense, Category } from "@/db/schema";
 import { useExpenses } from "@/hooks/useExpenses";
 import { useCategories } from "@/hooks/useCategories";
 import ExpenseListSection from "./ExpenseListSection";
@@ -11,11 +11,13 @@ import FinancialSummarySection from "./FinancialSummarySection";
 
 interface ExpenseDashboardProps {
   initialExpenses: Expense[];
+  initialCategories: Category[];
   userId: string | undefined;
 }
 
 export default function ExpenseDashboard({
   initialExpenses,
+  initialCategories,
   userId,
 }: ExpenseDashboardProps) {
   const {
@@ -24,7 +26,26 @@ export default function ExpenseDashboard({
     handleUpdateExpense,
     handleDeleteExpense,
   } = useExpenses(initialExpenses, userId);
-  const { categories, addCategory } = useCategories();
+  const { categories, addCategory, setCategories } = useCategories(
+    initialCategories,
+    userId
+  );
+
+  const handleAddCategory = (newCategory: string) => {
+    if (userId) {
+      addCategory(newCategory, userId);
+    } else {
+      // For logged-out users, add the category locally
+      const newLocalCategory: Category = {
+        id: `local-${Math.random().toString(36).substr(2, 9)}`,
+        name: newCategory,
+        userId: "default",
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      };
+      setCategories([...categories, newLocalCategory]);
+    }
+  };
 
   const totalExpenses = useMemo(
     () => expenses.reduce((sum, expense) => sum + Number(expense.amount), 0),
@@ -34,12 +55,13 @@ export default function ExpenseDashboard({
   const pieChartData = useMemo(() => {
     return Object.entries(
       expenses.reduce((acc, expense) => {
-        acc[expense.category] =
-          (acc[expense.category] || 0) + Number(expense.amount);
+        const category = categories.find((c) => c.id === expense.categoryId);
+        const categoryName = category ? category.name : "Uncategorized";
+        acc[categoryName] = (acc[categoryName] || 0) + Number(expense.amount);
         return acc;
       }, {} as Record<string, number>)
     ).map(([name, value]) => ({ name, value }));
-  }, [expenses]);
+  }, [expenses, categories]);
 
   return (
     <div className="grid gap-4">
@@ -50,7 +72,7 @@ export default function ExpenseDashboard({
         onUpdateExpense={handleUpdateExpense}
         onDeleteExpense={handleDeleteExpense}
         categories={categories}
-        onAddCategory={addCategory}
+        onAddCategory={handleAddCategory}
         userId={userId}
       />
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

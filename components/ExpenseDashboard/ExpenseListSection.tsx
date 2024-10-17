@@ -1,8 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Expense, NewExpense } from "@/db/schema";
-import { ExpenseCategory } from "@/types/expense";
+import { Expense, NewExpense, Category } from "@/db/schema";
 import ExpenseList from "@/components/ExpenseList";
 import AddExpenseDialog from "@/components/AddExpenseDialog";
 import {
@@ -22,7 +21,7 @@ interface ExpenseListSectionProps {
   onAddExpense: (newExpense: NewExpense) => void;
   onUpdateExpense: (updatedExpense: Expense) => void;
   onDeleteExpense: (id: string) => void;
-  categories: ExpenseCategory[];
+  categories: Category[];
   onAddCategory: (newCategory: string) => void;
   userId: string | undefined;
 }
@@ -61,6 +60,7 @@ export default function ExpenseListSection({
       <CardContent>
         <ExpenseList
           expenses={expenses}
+          categories={categories}
           onUpdateExpense={onUpdateExpense}
           onDeleteExpense={onDeleteExpense}
         />

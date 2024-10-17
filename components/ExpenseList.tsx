@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Expense } from "@/db/schema";
+import { Expense, Category } from "@/db/schema";
 import { Badge } from "@/components/ui/badge";
 import { CalendarIcon } from "lucide-react";
 import EditExpenseDialog from "./EditExpenseDialog";
@@ -9,17 +9,24 @@ import DeleteExpenseDialog from "./DeleteExpenseDialog";
 
 interface ExpenseListProps {
   expenses: Expense[];
+  categories: Category[];
   onUpdateExpense: (updatedExpense: Expense) => void;
   onDeleteExpense: (id: string) => void;
 }
 
 export default function ExpenseList({
   expenses,
+  categories,
   onUpdateExpense,
   onDeleteExpense,
 }: ExpenseListProps) {
+  const getCategoryName = (categoryId: string) => {
+    const category = categories.find((cat) => cat.id === categoryId);
+    return category ? category.name : "Uncategorized";
+  };
+
   const sortedExpenses = [...expenses].sort((a, b) =>
-    a.category.localeCompare(b.category)
+    getCategoryName(a.categoryId).localeCompare(getCategoryName(b.categoryId))
   );
 
   return (
@@ -35,7 +42,7 @@ export default function ExpenseList({
               variant={expense.type === "monthly" ? "default" : "secondary"}
               className="ml-2"
             >
-              {expense.category}
+              {getCategoryName(expense.categoryId)}
             </Badge>
           </div>
           <div className="flex items-center space-x-2">
@@ -50,6 +57,7 @@ export default function ExpenseList({
             )}
             <EditExpenseDialog
               expense={expense}
+              categories={categories}
               onUpdateExpense={onUpdateExpense}
             />
             <DeleteExpenseDialog

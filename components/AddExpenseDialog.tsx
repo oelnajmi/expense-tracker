@@ -18,13 +18,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { ExpenseCategory } from "@/types/expense";
-import { NewExpense } from "@/db/schema";
+import { NewExpense, Category } from "@/db/schema";
 
 interface AddExpenseDialogProps {
   onAddExpense: (expense: NewExpense) => void;
-  categories: ExpenseCategory[];
-  onAddCategory: (category: string) => void;
+  categories: Category[];
+  onAddCategory: (category: string, userId: string | undefined) => void;
   userId: string;
 }
 
@@ -37,17 +36,17 @@ export default function AddExpenseDialog({
   const [name, setName] = useState("");
   const [amount, setAmount] = useState("");
   const [type, setType] = useState<"monthly" | "subscription">("monthly");
-  const [category, setCategory] = useState<ExpenseCategory>("Other");
+  const [categoryId, setCategoryId] = useState<string>("");
   const [subscriptionDay, setSubscriptionDay] = useState<number>(1);
   const [newCategory, setNewCategory] = useState("");
 
   const handleAddExpense = () => {
-    if (name && amount) {
+    if (name && amount && categoryId) {
       const newExpense: NewExpense = {
         name,
         amount,
         type,
-        category: type === "subscription" ? "Subscription" : category,
+        categoryId,
         subscriptionDay: type === "subscription" ? subscriptionDay : null,
         userId,
       };
@@ -57,9 +56,8 @@ export default function AddExpenseDialog({
   };
 
   const handleAddCategory = () => {
-    if (newCategory && !categories.includes(newCategory as ExpenseCategory)) {
-      onAddCategory(newCategory);
-      setCategory(newCategory as ExpenseCategory);
+    if (newCategory && userId) {
+      onAddCategory(newCategory, userId);
       setNewCategory("");
     }
   };
@@ -68,7 +66,7 @@ export default function AddExpenseDialog({
     setName("");
     setAmount("");
     setType("monthly");
-    setCategory("Other");
+    setCategoryId("");
     setSubscriptionDay(1);
     setNewCategory("");
   };
@@ -129,55 +127,51 @@ export default function AddExpenseDialog({
             </SelectContent>
           </Select>
         </div>
-        {type === "monthly" && (
-          <>
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="category" className="text-right">
-                Category
-              </Label>
-              <Select
-                value={category}
-                onValueChange={(value) => setCategory(value as ExpenseCategory)}
-              >
-                <SelectTrigger className="col-span-3">
-                  <SelectValue placeholder="Select category" />
-                </SelectTrigger>
-                <SelectContent className="bg-white">
-                  {categories.map((cat) => (
-                    <SelectItem
-                      key={cat}
-                      value={cat}
-                      className="hover:bg-gray-100"
-                    >
-                      {cat}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="newCategory" className="text-right">
-                New Category
-              </Label>
-              <div className="col-span-3 flex gap-2">
-                <Input
-                  id="newCategory"
-                  value={newCategory}
-                  onChange={(e) => setNewCategory(e.target.value)}
-                  className="flex-grow"
-                  placeholder="Enter new category"
-                />
-                <Button
-                  className="bg-black text-white"
-                  type="button"
-                  onClick={handleAddCategory}
+        <div className="grid grid-cols-4 items-center gap-4">
+          <Label htmlFor="category" className="text-right">
+            Category
+          </Label>
+          <Select
+            value={categoryId}
+            onValueChange={(value) => setCategoryId(value)}
+          >
+            <SelectTrigger className="col-span-3">
+              <SelectValue placeholder="Select category" />
+            </SelectTrigger>
+            <SelectContent className="bg-white">
+              {categories.map((cat) => (
+                <SelectItem
+                  key={cat.id}
+                  value={cat.id}
+                  className="hover:bg-gray-100"
                 >
-                  Add
-                </Button>
-              </div>
-            </div>
-          </>
-        )}
+                  {cat.name}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+        <div className="grid grid-cols-4 items-center gap-4">
+          <Label htmlFor="newCategory" className="text-right">
+            New Category
+          </Label>
+          <div className="col-span-3 flex gap-2">
+            <Input
+              id="newCategory"
+              value={newCategory}
+              onChange={(e) => setNewCategory(e.target.value)}
+              className="flex-grow"
+              placeholder="Enter new category"
+            />
+            <Button
+              className="bg-black text-white"
+              type="button"
+              onClick={handleAddCategory}
+            >
+              Add
+            </Button>
+          </div>
+        </div>
         {type === "subscription" && (
           <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="subscriptionDay" className="text-right">
