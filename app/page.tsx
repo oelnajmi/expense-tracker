@@ -1,13 +1,10 @@
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
 import { PieChart } from "lucide-react";
 import SignIn from "@/components/SignIn";
-import { useSession } from "next-auth/react";
 import SignOut from "@/components/SignOut";
 import { auth } from "@/auth";
 
 export default async function LandingPage() {
-  // const { data: session } = useSession();
   const session = await auth();
 
   return (

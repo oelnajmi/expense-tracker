@@ -1,3 +1,4 @@
+import { InferInsertModel, InferSelectModel } from "drizzle-orm";
 import {
   integer,
   text,
@@ -5,6 +6,7 @@ import {
   pgTable,
   timestamp,
   primaryKey,
+  numeric,
 } from "drizzle-orm/pg-core";
 import type { AdapterAccountType } from "next-auth/adapters";
 
@@ -84,3 +86,23 @@ export const authenticators = pgTable(
     }),
   })
 );
+
+export const expenses = pgTable("expense", {
+  id: text("id")
+    .primaryKey()
+    .$defaultFn(() => crypto.randomUUID()),
+  userId: text("userId")
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
+  name: text("name").notNull(),
+  amount: numeric("amount", { precision: 10, scale: 2 }).notNull(),
+  type: text("type").notNull().$type<"monthly" | "subscription">(),
+  category: text("category").notNull(),
+  subscriptionDay: integer("subscriptionDay"),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
+
+// Type definitions for expenses table
+export type Expense = InferSelectModel<typeof expenses>;
+export type NewExpense = InferInsertModel<typeof expenses>;
