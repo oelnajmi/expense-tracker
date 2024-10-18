@@ -1,15 +1,21 @@
-import { signOut } from "@/auth";
-import { Button } from "./ui/button";
+"use client";
 
-export default async function SignOut() {
+import { signOut } from "next-auth/react";
+import { Button } from "./ui/button";
+import { useRouter } from "next/navigation";
+
+export default function SignOut() {
+  const router = useRouter();
+
+  const handleSignOut = async () => {
+    await signOut({ redirect: false });
+    router.refresh();
+    window.location.href = "/";
+  };
+
   return (
-    <form
-      action={async () => {
-        "use server";
-        await signOut();
-      }}
-    >
-      <Button className="bg-black text-white">Sign Out</Button>
-    </form>
+    <Button onClick={handleSignOut} className="bg-black text-white">
+      Sign Out
+    </Button>
   );
 }
