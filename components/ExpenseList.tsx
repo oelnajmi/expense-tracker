@@ -22,7 +22,7 @@ export default function ExpenseList({
 }: ExpenseListProps) {
   const getCategoryName = (categoryId: string) => {
     const category = categories.find((cat) => cat.id === categoryId);
-    return category ? category.name : "Uncategorized";
+    return category ? category.name : "Subscription";
   };
 
   const sortedExpenses = [...expenses].sort((a, b) =>

@@ -56,7 +56,7 @@ export default function ExpenseDashboard({
     return Object.entries(
       expenses.reduce((acc, expense) => {
         const category = categories.find((c) => c.id === expense.categoryId);
-        const categoryName = category ? category.name : "Uncategorized";
+        const categoryName = category ? category.name : "Subscription";
         acc[categoryName] = (acc[categoryName] || 0) + Number(expense.amount);
         return acc;
       }, {} as Record<string, number>)
