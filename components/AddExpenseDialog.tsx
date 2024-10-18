@@ -19,6 +19,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { NewExpense, Category } from "@/db/schema";
+import { useSession } from "next-auth/react";
+import { useToast } from "@/hooks/use-toast";
 
 interface AddExpenseDialogProps {
   onAddExpense: (expense: NewExpense) => void;
@@ -33,6 +35,9 @@ export default function AddExpenseDialog({
   onAddCategory,
   userId,
 }: AddExpenseDialogProps) {
+  const { status } = useSession();
+  const { toast } = useToast();
+
   const [name, setName] = useState("");
   const [amount, setAmount] = useState("");
   const [type, setType] = useState<"monthly" | "subscription">("monthly");
@@ -63,6 +68,10 @@ export default function AddExpenseDialog({
     if (newCategory && userId) {
       onAddCategory(newCategory, userId);
       setNewCategory("");
+      toast({
+        title: "Category added",
+        description: `Your category "${newCategory}" has been successfully added.`,
+      });
     }
   };
 
@@ -159,26 +168,35 @@ export default function AddExpenseDialog({
                 </SelectContent>
               </Select>
             </div>
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="newCategory" className="text-right">
-                New Category
-              </Label>
-              <div className="col-span-3 flex gap-2">
-                <Input
-                  id="newCategory"
-                  value={newCategory}
-                  onChange={(e) => setNewCategory(e.target.value)}
-                  className="flex-grow"
-                  placeholder="Enter new category"
-                />
-                <Button
-                  className="bg-black text-white"
-                  type="button"
-                  onClick={handleAddCategory}
-                >
-                  Add
-                </Button>
-              </div>
+            <div>
+              {status === "authenticated" && (
+                <div className="grid grid-cols-4 items-center gap-4">
+                  <Label htmlFor="newCategory" className="text-right">
+                    New Category
+                  </Label>
+                  <div className="col-span-3 flex gap-2">
+                    <Input
+                      id="newCategory"
+                      value={newCategory}
+                      onChange={(e) => setNewCategory(e.target.value)}
+                      className="flex-grow"
+                      placeholder="Enter new category"
+                    />
+                    <Button
+                      className="bg-black text-white"
+                      type="button"
+                      onClick={handleAddCategory}
+                    >
+                      Add
+                    </Button>
+                  </div>
+                </div>
+              )}
+              {status !== "authenticated" && (
+                <div className="col-span-4 text-center text-sm text-gray-500 mt-2">
+                  Log in to add a new category
+                </div>
+              )}
             </div>
           </>
         )}
