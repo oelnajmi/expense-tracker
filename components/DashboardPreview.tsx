@@ -20,7 +20,14 @@ import {
   CartesianGrid,
   Tooltip,
   ResponsiveContainer,
+  Cell,
 } from "recharts";
+import {
+  ChartConfig,
+  ChartContainer,
+  ChartTooltip,
+  ChartTooltipContent,
+} from "@/components/ui/chart";
 
 const dummyExpenses = [
   { id: "1", name: "Groceries", amount: 150, category: "Food" },
@@ -29,10 +36,28 @@ const dummyExpenses = [
 ];
 
 const dummyChartData = [
-  { name: "Food", amount: 300 },
-  { name: "Entertainment", amount: 150 },
-  { name: "Utilities", amount: 200 },
+  { name: "Food", amount: 300, color: "#FF6384" },
+  { name: "Entertainment", amount: 150, color: "#36A2EB" },
+  { name: "Utilities", amount: 200, color: "#FFCE56" },
 ];
+
+const COLORS = [
+  "hsl(var(--chart-1))",
+  "hsl(var(--chart-2))",
+  "hsl(var(--chart-3))",
+  "hsl(var(--chart-4))",
+  "hsl(var(--chart-5))",
+  "hsl(var(--chart-6))",
+  "hsl(var(--chart-7))",
+];
+
+const chartConfig: ChartConfig = dummyChartData.reduce((acc, item, index) => {
+  acc[item.name] = {
+    label: item.name,
+    color: COLORS[index % COLORS.length],
+  };
+  return acc;
+}, {} as ChartConfig);
 
 export default function DashboardPreview() {
   return (
@@ -92,16 +117,45 @@ export default function DashboardPreview() {
             <CardTitle>Expense Distribution</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="h-[200px]">
-              <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={dummyChartData}>
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="name" />
-                  <YAxis />
-                  <Tooltip />
-                  <Bar dataKey="amount" fill="#8884d8" />
-                </BarChart>
-              </ResponsiveContainer>
+            <div className="h-[300px] mt-10">
+              <ChartContainer config={chartConfig}>
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart
+                    data={dummyChartData}
+                    margin={{ top: 20, right: 30, left: 20, bottom: 20 }}
+                  >
+                    <CartesianGrid vertical={false} strokeDasharray="3 3" />
+                    <XAxis
+                      dataKey="name"
+                      tickLine={false}
+                      tickMargin={10}
+                      axisLine={false}
+                      tick={{
+                        textAnchor: "end",
+                        dominantBaseline: "ideographic",
+                        fontSize: 12,
+                      }}
+                    />
+                    <YAxis
+                      tickFormatter={(value) => `$${value}`}
+                      tickLine={false}
+                      axisLine={false}
+                    />
+                    <ChartTooltip
+                      cursor={false}
+                      content={<ChartTooltipContent hideLabel />}
+                    />
+                    <Bar dataKey="amount" radius={[4, 4, 0, 0]}>
+                      {dummyChartData.map((entry, index) => (
+                        <Cell
+                          key={`cell-${index}`}
+                          fill={COLORS[index % COLORS.length]}
+                        />
+                      ))}
+                    </Bar>
+                  </BarChart>
+                </ResponsiveContainer>
+              </ChartContainer>
             </div>
           </CardContent>
         </Card>

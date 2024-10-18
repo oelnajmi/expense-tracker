@@ -2,62 +2,35 @@
 
 import React from "react";
 import {
-  BarChart,
   Bar,
+  BarChart,
+  CartesianGrid,
   XAxis,
   YAxis,
-  CartesianGrid,
   Tooltip,
-  ResponsiveContainer,
   Cell,
 } from "recharts";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  ChartConfig,
+  ChartContainer,
+  ChartTooltip,
+  ChartTooltipContent,
+} from "@/components/ui/chart";
 
 interface ExpenseDistributionProps {
   expenseData: { name: string; amount: number }[];
 }
 
-const CustomTooltip = ({ active, payload, label }: any) => {
-  if (active && payload && payload.length) {
-    return (
-      <div className="bg-popover text-popover-foreground p-2 border rounded shadow-md">
-        <p className="font-semibold">{label}</p>
-        <p>${payload[0].value.toFixed(2)}</p>
-      </div>
-    );
-  }
-  return null;
-};
-
 const COLORS = [
-  "#FF6384", // Bright Pink
-  "#36A2EB", // Bright Blue
-  "#FFCE56", // Bright Yellow
-  "#4BC0C0", // Teal
-  "#9966FF", // Purple
-  "#FF9F40", // Orange
-  "#FF6384", // Bright Pink (repeated)
+  "hsl(var(--chart-1))",
+  "hsl(var(--chart-2))",
+  "hsl(var(--chart-3))",
+  "hsl(var(--chart-4))",
+  "hsl(var(--chart-5))",
+  "hsl(var(--chart-6))",
+  "hsl(var(--chart-7))",
 ];
-
-const CustomizedAxisTick = (props: any) => {
-  const { x, y, payload } = props;
-
-  return (
-    <g transform={`translate(${x},${y})`}>
-      <text
-        x={0}
-        y={0}
-        dy={16}
-        textAnchor="end"
-        fill="#666"
-        transform="rotate(-35)"
-        style={{ fontSize: "12px" }}
-      >
-        {payload.value}
-      </text>
-    </g>
-  );
-};
 
 export default function ExpenseDistribution({
   expenseData,
@@ -65,33 +38,57 @@ export default function ExpenseDistribution({
   // Sort data by amount in descending order
   const sortedData = [...expenseData].sort((a, b) => b.amount - a.amount);
 
+  const chartConfig: ChartConfig = sortedData.reduce((acc, item, index) => {
+    acc[item.name] = {
+      label: item.name,
+      color: COLORS[index % COLORS.length],
+    };
+    return acc;
+  }, {} as ChartConfig);
+
   return (
     <Card>
       <CardHeader>
         <CardTitle>Expense Distribution</CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="h-[300px]">
-          <ResponsiveContainer width="100%" height="100%">
-            <BarChart
-              data={sortedData}
-              margin={{ top: 20, right: 30, left: 20, bottom: 20 }}
-            >
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="name" height={60} tick={<CustomizedAxisTick />} />
-              <YAxis tickFormatter={(value) => `$${value}`} />
-              <Tooltip content={<CustomTooltip />} />
-              <Bar dataKey="amount">
-                {sortedData.map((entry, index) => (
-                  <Cell
-                    key={`cell-${index}`}
-                    fill={COLORS[index % COLORS.length]}
-                  />
-                ))}
-              </Bar>
-            </BarChart>
-          </ResponsiveContainer>
-        </div>
+        <ChartContainer config={chartConfig}>
+          <BarChart
+            data={sortedData}
+            margin={{ top: 20, right: 30, left: 20, bottom: 20 }}
+            height={300}
+          >
+            <CartesianGrid vertical={false} strokeDasharray="3 3" />
+            <XAxis
+              dataKey="name"
+              tickLine={false}
+              tickMargin={10}
+              axisLine={false}
+              tick={{
+                textAnchor: "end",
+                dominantBaseline: "ideographic",
+                fontSize: 12,
+              }}
+            />
+            <YAxis
+              tickFormatter={(value) => `$${value}`}
+              tickLine={false}
+              axisLine={false}
+            />
+            <ChartTooltip
+              cursor={false}
+              content={<ChartTooltipContent hideLabel />}
+            />
+            <Bar dataKey="amount" radius={[4, 4, 0, 0]}>
+              {sortedData.map((entry, index) => (
+                <Cell
+                  key={`cell-${index}`}
+                  fill={COLORS[index % COLORS.length]}
+                />
+              ))}
+            </Bar>
+          </BarChart>
+        </ChartContainer>
       </CardContent>
     </Card>
   );
