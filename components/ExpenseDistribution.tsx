@@ -28,7 +28,9 @@ interface ExpenseDistributionProps {
 const CustomTooltip = ({ active, payload }: any) => {
   if (active && payload && payload.length) {
     return (
-      <div className="bg-white p-2 border rounded shadow">
+      <div
+        className={`bg-popover text-popover-foreground p-2 border rounded shadow-md`}
+      >
         <p className="font-semibold">{payload[0].name}</p>
         <p>${payload[0].value.toFixed(2)}</p>
       </div>
