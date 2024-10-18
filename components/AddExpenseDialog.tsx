@@ -85,40 +85,39 @@ export default function AddExpenseDialog({
   };
 
   return (
-    <DialogContent className="bg-white sm:max-w-[425px]">
+    <DialogContent className="bg-background text-foreground">
       <DialogHeader>
-        <DialogTitle>Add Expense</DialogTitle>
-        <DialogDescription>
-          Enter the details of your new expense here. Click save when youre
-          done.
+        <DialogTitle className="text-foreground">Add New Expense</DialogTitle>
+        <DialogDescription className="text-muted-foreground">
+          Fill in the details for your new expense.
         </DialogDescription>
       </DialogHeader>
       <div className="grid gap-4 py-4">
         <div className="grid grid-cols-4 items-center gap-4">
-          <Label htmlFor="name" className="text-right">
+          <Label htmlFor="name" className="text-right text-foreground">
             Name
           </Label>
           <Input
             id="name"
+            className="col-span-3 bg-background text-foreground border-input"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            className="col-span-3"
           />
         </div>
         <div className="grid grid-cols-4 items-center gap-4">
-          <Label htmlFor="amount" className="text-right">
+          <Label htmlFor="amount" className="text-right text-foreground">
             Amount
           </Label>
           <Input
             id="amount"
             type="text"
+            className="col-span-3 bg-background text-foreground border-input"
             value={amount}
             onChange={(e) => setAmount(e.target.value)}
-            className="col-span-3"
           />
         </div>
         <div className="grid grid-cols-4 items-center gap-4">
-          <Label htmlFor="type" className="text-right">
+          <Label htmlFor="type" className="text-right text-foreground">
             Type
           </Label>
           <Select
@@ -127,41 +126,33 @@ export default function AddExpenseDialog({
               setType(value as "monthly" | "subscription")
             }
           >
-            <SelectTrigger className="col-span-3">
+            <SelectTrigger className="col-span-3 bg-background text-foreground border-input">
               <SelectValue placeholder="Select expense type" />
             </SelectTrigger>
-            <SelectContent className="bg-white">
-              <SelectItem value="monthly" className="hover:bg-gray-100">
-                Monthly
-              </SelectItem>
-              <SelectItem value="subscription" className="hover:bg-gray-100">
-                Subscription
-              </SelectItem>
+            <SelectContent className="bg-popover text-popover-foreground">
+              <SelectItem value="monthly">Monthly</SelectItem>
+              <SelectItem value="subscription">Subscription</SelectItem>
             </SelectContent>
           </Select>
         </div>
         {type === "monthly" && (
           <>
             <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="category" className="text-right">
+              <Label htmlFor="category" className="text-right text-foreground">
                 Category
               </Label>
               <Select
                 value={categoryId}
                 onValueChange={(value) => setCategoryId(value)}
               >
-                <SelectTrigger className="col-span-3">
+                <SelectTrigger className="col-span-3 bg-background text-foreground border-input">
                   <SelectValue placeholder="Select category" />
                 </SelectTrigger>
-                <SelectContent className="bg-white">
+                <SelectContent className="bg-popover text-popover-foreground">
                   {categories
                     .filter((cat) => cat.name !== "Subscription")
                     .map((cat) => (
-                      <SelectItem
-                        key={cat.id}
-                        value={cat.id}
-                        className="hover:bg-gray-100"
-                      >
+                      <SelectItem key={cat.id} value={cat.id}>
                         {cat.name}
                       </SelectItem>
                     ))}
@@ -171,19 +162,22 @@ export default function AddExpenseDialog({
             <div>
               {status === "authenticated" && (
                 <div className="grid grid-cols-4 items-center gap-4">
-                  <Label htmlFor="newCategory" className="text-right">
+                  <Label
+                    htmlFor="newCategory"
+                    className="text-right text-foreground"
+                  >
                     New Category
                   </Label>
                   <div className="col-span-3 flex gap-2">
                     <Input
                       id="newCategory"
+                      className="flex-grow bg-background text-foreground border-input"
                       value={newCategory}
                       onChange={(e) => setNewCategory(e.target.value)}
-                      className="flex-grow"
                       placeholder="Enter new category"
                     />
                     <Button
-                      className="bg-black text-white"
+                      className="bg-primary text-primary-foreground hover:bg-primary/90"
                       type="button"
                       onClick={handleAddCategory}
                     >
@@ -193,7 +187,7 @@ export default function AddExpenseDialog({
                 </div>
               )}
               {status !== "authenticated" && (
-                <div className="col-span-4 text-center text-sm text-gray-500 mt-2">
+                <div className="col-span-4 text-center text-sm text-muted-foreground mt-2">
                   Log in to add a new category
                 </div>
               )}
@@ -202,23 +196,22 @@ export default function AddExpenseDialog({
         )}
         {type === "subscription" && (
           <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="subscriptionDay" className="text-right">
+            <Label
+              htmlFor="subscriptionDay"
+              className="text-right text-foreground"
+            >
               Day of Month
             </Label>
             <Select
               value={subscriptionDay.toString()}
               onValueChange={(value) => setSubscriptionDay(parseInt(value))}
             >
-              <SelectTrigger className="col-span-3">
+              <SelectTrigger className="col-span-3 bg-background text-foreground border-input">
                 <SelectValue placeholder="Select day" />
               </SelectTrigger>
-              <SelectContent className="bg-white">
+              <SelectContent className="bg-popover text-popover-foreground">
                 {Array.from({ length: 31 }, (_, i) => i + 1).map((day) => (
-                  <SelectItem
-                    key={day}
-                    value={day.toString()}
-                    className="hover:bg-gray-100"
-                  >
+                  <SelectItem key={day} value={day.toString()}>
                     {day}
                   </SelectItem>
                 ))}
@@ -229,11 +222,11 @@ export default function AddExpenseDialog({
       </div>
       <DialogFooter>
         <Button
-          className="bg-black text-white"
+          className="bg-primary text-primary-foreground hover:bg-primary/90"
           type="submit"
           onClick={handleAddExpense}
         >
-          Save expense
+          Add Expense
         </Button>
       </DialogFooter>
     </DialogContent>

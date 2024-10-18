@@ -8,7 +8,7 @@ export default async function LandingPage() {
   const session = await auth();
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col min-h-screen bg-background text-foreground">
       <div className="container mx-auto px-4 pt-6 flex flex-col flex-grow">
         <header className="lg:px-6 h-14 flex items-center">
           <Link className="flex items-center justify-center" href="#">
@@ -33,7 +33,7 @@ export default async function LandingPage() {
                   <h1 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl lg:text-6xl/none">
                     Manage Your Finances with Ease
                   </h1>
-                  <p className="mx-auto max-w-[700px] text-gray-500 md:text-xl dark:text-gray-400">
+                  <p className="mx-auto max-w-[700px] text-muted-foreground md:text-xl">
                     Track expenses, monitor subscriptions, and gain financial
                     insights all in one place.
                   </p>
@@ -43,10 +43,10 @@ export default async function LandingPage() {
           </section>
         </main>
       </div>
-      <footer className="w-full mt-auto border-t">
+      <footer className="w-full mt-auto border-t border-border">
         <div className="container mx-auto px-4 py-6">
           <div className="flex flex-col sm:flex-row items-center justify-between">
-            <p className="text-xs text-gray-500 dark:text-gray-400">
+            <p className="text-xs text-muted-foreground">
               © 2024 ExpenseEase. All rights reserved.
             </p>
             <nav className="flex gap-4 sm:gap-6 mt-2 sm:mt-0">

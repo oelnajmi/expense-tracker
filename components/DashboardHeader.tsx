@@ -1,6 +1,7 @@
 import { auth } from "@/auth";
 import SignIn from "@/components/SignIn";
 import SignOut from "@/components/SignOut";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 export default async function DashboardHeader() {
   const session = await auth();
@@ -15,7 +16,9 @@ export default async function DashboardHeader() {
             <h1 className="text-3xl font-bold">Log In To Save Your Data</h1>
           )}
 
-          <p className="text-gray-500">
+          <p className="text-muted-foreground">
+            {" "}
+            {/* Changed from text-gray-500 */}
             {new Date().toLocaleDateString("en-US", {
               weekday: "long",
               year: "numeric",
@@ -25,7 +28,10 @@ export default async function DashboardHeader() {
           </p>
         </header>
       </div>
-      <div>{session ? <SignOut /> : <SignIn />}</div>
+      <div className="flex items-center gap-4">
+        <ThemeToggle />
+        {session ? <SignOut /> : <SignIn />}
+      </div>
     </div>
   );
 }

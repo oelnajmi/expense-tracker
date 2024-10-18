@@ -8,11 +8,13 @@ interface SubscriptionCalendarSectionProps {
   expenses: Expense[];
 }
 
-export default function SubscriptionCalendarSection({ expenses }: SubscriptionCalendarSectionProps) {
+export default function SubscriptionCalendarSection({
+  expenses,
+}: SubscriptionCalendarSectionProps) {
   return (
-    <Card>
+    <Card className="bg-background border-border">
       <CardHeader>
-        <CardTitle>Subscription Calendar</CardTitle>
+        <CardTitle className="text-foreground">Subscription Calendar</CardTitle>
       </CardHeader>
       <CardContent>
         <SimplifiedCalendar expenses={expenses} />

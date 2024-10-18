@@ -54,95 +54,103 @@ export default function EditExpenseDialog({
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="outline" size="icon">
+        <Button
+          variant="ghost"
+          size="icon"
+          className="text-primary hover:text-primary/90"
+        >
           <Pencil className="h-4 w-4" />
         </Button>
       </DialogTrigger>
-      <DialogContent className="bg-white sm:max-w-[425px]">
+      <DialogContent className="sm:max-w-[425px] bg-background text-foreground">
         <DialogHeader>
-          <DialogTitle>Edit Expense</DialogTitle>
-          <DialogDescription>
+          <DialogTitle className="text-foreground">Edit Expense</DialogTitle>
+          <DialogDescription className="text-muted-foreground">
             Make changes to your expense here. Click save when youre done.
           </DialogDescription>
         </DialogHeader>
-        <div className="grid gap-4 py-4">
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="edit-name" className="text-right">
-              Name
-            </Label>
-            <Input
-              id="edit-name"
-              value={editName}
-              onChange={(e) => setEditName(e.target.value)}
-              className="col-span-3"
-            />
-          </div>
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="edit-amount" className="text-right">
-              Amount
-            </Label>
-            <Input
-              id="edit-amount"
-              type="number"
-              value={editAmount}
-              onChange={(e) => setEditAmount(e.target.value)}
-              className="col-span-3"
-            />
-          </div>
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="edit-category" className="text-right">
-              Category
-            </Label>
-            <Select
-              value={editCategoryId}
-              onValueChange={(value) => setEditCategoryId(value)}
-            >
-              <SelectTrigger className="col-span-3">
-                <SelectValue placeholder="Select category" />
-              </SelectTrigger>
-              <SelectContent className="bg-white">
-                {categories.map((category) => (
-                  <SelectItem
-                    key={category.id}
-                    value={category.id}
-                    className="hover:bg-gray-100"
-                  >
-                    {category.name}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-          {expense.type === "subscription" && (
+        <form onSubmit={handleUpdateExpense}>
+          <div className="grid gap-4 py-4">
             <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="edit-subscription-day" className="text-right">
-                Day of Month
+              <Label htmlFor="edit-name" className="text-right text-foreground">
+                Name
               </Label>
               <Input
-                id="edit-subscription-day"
-                type="number"
-                min="1"
-                max="31"
-                value={editSubscriptionDay}
-                onChange={(e) =>
-                  setEditSubscriptionDay(parseInt(e.target.value))
-                }
-                className="col-span-3"
+                id="edit-name"
+                value={editName}
+                onChange={(e) => setEditName(e.target.value)}
+                className="col-span-3 bg-background text-foreground border-input"
               />
             </div>
-          )}
-        </div>
-        <DialogFooter>
-          <Button
-            className="
-            bg-black text-white
-            "
-            type="submit"
-            onClick={handleUpdateExpense}
-          >
-            Save changes
-          </Button>
-        </DialogFooter>
+            <div className="grid grid-cols-4 items-center gap-4">
+              <Label
+                htmlFor="edit-amount"
+                className="text-right text-foreground"
+              >
+                Amount
+              </Label>
+              <Input
+                id="edit-amount"
+                type="number"
+                value={editAmount}
+                onChange={(e) => setEditAmount(e.target.value)}
+                className="col-span-3 bg-background text-foreground border-input"
+              />
+            </div>
+            <div className="grid grid-cols-4 items-center gap-4">
+              <Label
+                htmlFor="edit-category"
+                className="text-right text-foreground"
+              >
+                Category
+              </Label>
+              <Select
+                value={editCategoryId}
+                onValueChange={(value) => setEditCategoryId(value)}
+              >
+                <SelectTrigger className="col-span-3 bg-background text-foreground border-input">
+                  <SelectValue placeholder="Select category" />
+                </SelectTrigger>
+                <SelectContent>
+                  {categories.map((category) => (
+                    <SelectItem key={category.id} value={category.id}>
+                      {category.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+            {expense.type === "subscription" && (
+              <div className="grid grid-cols-4 items-center gap-4">
+                <Label
+                  htmlFor="edit-subscription-day"
+                  className="text-right text-foreground"
+                >
+                  Day of Month
+                </Label>
+                <Input
+                  id="edit-subscription-day"
+                  type="number"
+                  min="1"
+                  max="31"
+                  value={editSubscriptionDay}
+                  onChange={(e) =>
+                    setEditSubscriptionDay(parseInt(e.target.value))
+                  }
+                  className="col-span-3 bg-background text-foreground border-input"
+                />
+              </div>
+            )}
+          </div>
+          <DialogFooter>
+            <Button
+              type="submit"
+              className="bg-primary text-primary-foreground"
+            >
+              Save Changes
+            </Button>
+          </DialogFooter>
+        </form>
       </DialogContent>
     </Dialog>
   );

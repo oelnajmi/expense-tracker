@@ -13,9 +13,9 @@ export default async function SignIn() {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button className="bg-black text-white">Log In</Button>
+        <Button className="bg-primary text-primary-foreground">Log In</Button>
       </DialogTrigger>
-      <DialogContent className="bg-white sm:max-w-[425px]">
+      <DialogContent className="bg-background sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle className="text-center text-2xl font-bold">
             Hello!

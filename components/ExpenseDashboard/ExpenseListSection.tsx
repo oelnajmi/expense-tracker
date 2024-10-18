@@ -37,15 +37,15 @@ export default function ExpenseListSection({
   userId,
 }: ExpenseListSectionProps) {
   return (
-    <Card>
+    <Card className="bg-background border-border">
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-        <CardTitle>Expense List</CardTitle>
-        <CardDescription>
+        <CardTitle className="text-foreground">Expense List</CardTitle>
+        <CardDescription className="text-muted-foreground">
           Total Expenses: ${totalExpenses.toFixed(2)}
         </CardDescription>
         <Dialog>
           <DialogTrigger asChild>
-            <Button variant="outline" size="icon">
+            <Button variant="outline" size="icon" className="text-foreground">
               <PlusIcon className="h-4 w-4" />
             </Button>
           </DialogTrigger>

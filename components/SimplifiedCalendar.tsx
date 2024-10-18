@@ -29,19 +29,19 @@ export default function SimplifiedCalendar({
         return (
           <div key={day} className="relative group cursor-pointer">
             <div
-              className={`flex items-center justify-center h-10 rounded-full ${
+              className={`flex items-center justify-center h-10 rounded-full transition-colors ${
                 subscriptions.length > 0
-                  ? "bg-blue-500 text-white"
-                  : "bg-gray-100 hover:bg-gray-200"
+                  ? "bg-primary text-primary-foreground"
+                  : "bg-muted text-muted-foreground hover:bg-muted/80"
               }`}
             >
               {day}
             </div>
             {subscriptions.length > 0 && (
-              <Card className="absolute z-10 hidden group-hover:block bg-white border rounded-md shadow-lg -mt-2 left-full ml-2 w-64">
+              <Card className="absolute z-10 hidden group-hover:block bg-card text-card-foreground border-border rounded-md shadow-lg -mt-2 left-full ml-2 w-64">
                 <CardHeader className="p-3">
                   <CardTitle className="text-sm">Day {day} Expenses</CardTitle>
-                  <CardDescription className="text-xs">
+                  <CardDescription className="text-xs text-muted-foreground">
                     {subscriptions.length} subscription
                     {subscriptions.length !== 1 ? "s" : ""}
                   </CardDescription>
@@ -58,7 +58,7 @@ export default function SimplifiedCalendar({
                       </span>
                     </div>
                   ))}
-                  <div className="text-sm font-bold flex justify-between items-center mt-2 pt-2 border-t">
+                  <div className="text-sm font-bold flex justify-between items-center mt-2 pt-2 border-t border-border">
                     <span>Total</span>
                     <span>
                       $
