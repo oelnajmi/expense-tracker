@@ -2,36 +2,26 @@
 
 import React from "react";
 import {
-  PieChart,
-  Pie,
-  Cell,
-  ResponsiveContainer,
-  Legend,
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
   Tooltip,
+  ResponsiveContainer,
+  Cell,
 } from "recharts";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
-const COLORS = [
-  "#FF6384",
-  "#36A2EB",
-  "#FFCE56",
-  "#4BC0C0",
-  "#9966FF",
-  "#FF9F40",
-  "#FF6384",
-];
-
 interface ExpenseDistributionProps {
-  pieChartData: { name: string; value: number }[];
+  expenseData: { name: string; amount: number }[];
 }
 
-const CustomTooltip = ({ active, payload }: any) => {
+const CustomTooltip = ({ active, payload, label }: any) => {
   if (active && payload && payload.length) {
     return (
-      <div
-        className={`bg-popover text-popover-foreground p-2 border rounded shadow-md`}
-      >
-        <p className="font-semibold">{payload[0].name}</p>
+      <div className="bg-popover text-popover-foreground p-2 border rounded shadow-md">
+        <p className="font-semibold">{label}</p>
         <p>${payload[0].value.toFixed(2)}</p>
       </div>
     );
@@ -39,37 +29,67 @@ const CustomTooltip = ({ active, payload }: any) => {
   return null;
 };
 
+const COLORS = [
+  "#FF6384", // Bright Pink
+  "#36A2EB", // Bright Blue
+  "#FFCE56", // Bright Yellow
+  "#4BC0C0", // Teal
+  "#9966FF", // Purple
+  "#FF9F40", // Orange
+  "#FF6384", // Bright Pink (repeated)
+];
+
+const CustomizedAxisTick = (props: any) => {
+  const { x, y, payload } = props;
+
+  return (
+    <g transform={`translate(${x},${y})`}>
+      <text
+        x={0}
+        y={0}
+        dy={16}
+        textAnchor="end"
+        fill="#666"
+        transform="rotate(-35)"
+        style={{ fontSize: "12px" }}
+      >
+        {payload.value}
+      </text>
+    </g>
+  );
+};
+
 export default function ExpenseDistribution({
-  pieChartData,
+  expenseData,
 }: ExpenseDistributionProps) {
+  // Sort data by amount in descending order
+  const sortedData = [...expenseData].sort((a, b) => b.amount - a.amount);
+
   return (
     <Card>
       <CardHeader>
         <CardTitle>Expense Distribution</CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="h-[300px]">
+        <div className="h-[400px]">
           <ResponsiveContainer width="100%" height="100%">
-            <PieChart>
-              <Pie
-                data={pieChartData}
-                cx="50%"
-                cy="50%"
-                labelLine={false}
-                outerRadius={80}
-                fill="#8884d8"
-                dataKey="value"
-              >
-                {pieChartData.map((entry, index) => (
+            <BarChart
+              data={sortedData}
+              margin={{ top: 20, right: 30, left: 20, bottom: 20 }}
+            >
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="name" height={60} tick={<CustomizedAxisTick />} />
+              <YAxis tickFormatter={(value) => `$${value}`} />
+              <Tooltip content={<CustomTooltip />} />
+              <Bar dataKey="amount">
+                {sortedData.map((entry, index) => (
                   <Cell
                     key={`cell-${index}`}
                     fill={COLORS[index % COLORS.length]}
                   />
                 ))}
-              </Pie>
-              <Tooltip content={<CustomTooltip />} />
-              <Legend />
-            </PieChart>
+              </Bar>
+            </BarChart>
           </ResponsiveContainer>
         </div>
       </CardContent>

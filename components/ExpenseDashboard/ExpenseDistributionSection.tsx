@@ -3,9 +3,9 @@
 import ExpenseDistribution from "@/components/ExpenseDistribution";
 
 interface ExpenseDistributionSectionProps {
-  pieChartData: { name: string; value: number }[];
+  expenseData: { name: string; amount: number }[];
 }
 
-export default function ExpenseDistributionSection({ pieChartData }: ExpenseDistributionSectionProps) {
-  return <ExpenseDistribution pieChartData={pieChartData} />;
+export default function ExpenseDistributionSection({ expenseData }: ExpenseDistributionSectionProps) {
+  return <ExpenseDistribution expenseData={expenseData} />;
 }

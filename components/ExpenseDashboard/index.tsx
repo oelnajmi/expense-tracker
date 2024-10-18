@@ -52,7 +52,7 @@ export default function ExpenseDashboard({
     [expenses]
   );
 
-  const pieChartData = useMemo(() => {
+  const expenseData = useMemo(() => {
     return Object.entries(
       expenses.reduce((acc, expense) => {
         const category = categories.find((c) => c.id === expense.categoryId);
@@ -60,7 +60,7 @@ export default function ExpenseDashboard({
         acc[categoryName] = (acc[categoryName] || 0) + Number(expense.amount);
         return acc;
       }, {} as Record<string, number>)
-    ).map(([name, value]) => ({ name, value }));
+    ).map(([name, amount]) => ({ name, amount }));
   }, [expenses, categories]);
 
   return (
@@ -76,7 +76,7 @@ export default function ExpenseDashboard({
         userId={userId}
       />
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <ExpenseDistributionSection pieChartData={pieChartData} />
+        <ExpenseDistributionSection expenseData={expenseData} />
         <SubscriptionCalendarSection expenses={expenses} />
       </div>
       <FinancialSummarySection totalExpenses={totalExpenses} />
