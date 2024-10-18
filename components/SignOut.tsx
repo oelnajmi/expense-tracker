@@ -9,12 +9,14 @@ export default function SignOut() {
 
   const handleSignOut = async () => {
     await signOut({ redirect: false });
-    router.refresh();
-    window.location.href = "/";
+    router.push("/");
   };
 
   return (
-    <Button onClick={handleSignOut} className="bg-black text-white">
+    <Button
+      onClick={handleSignOut}
+      className="bg-primary text-primary-foreground hover:bg-primary/90"
+    >
       Sign Out
     </Button>
   );
