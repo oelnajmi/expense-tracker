@@ -3,6 +3,7 @@ import { PieChart } from "lucide-react";
 import SignIn from "@/components/SignIn";
 import SignOut from "@/components/SignOut";
 import { auth } from "@/auth";
+import DashboardPreview from "@/components/DashboardPreview";
 
 export default async function LandingPage() {
   const session = await auth();
@@ -17,16 +18,16 @@ export default async function LandingPage() {
           </Link>
           <nav className="ml-auto flex items-center gap-4 sm:gap-6">
             <Link
-              className="text-sm font-medium hover:underline underline-offset-4"
+              className="text-sm font-medium underline underline-offset-4"
               href="/dashboard"
             >
-              Tracker
+              Try it out
             </Link>
             {session ? <SignOut /> : <SignIn />}
           </nav>
         </header>
         <main className="flex-grow">
-          <section className="w-full py-12 md:py-24 lg:py-32 xl:py-48">
+          <section className="w-full py-12 md:py-24 lg:py-32">
             <div className="md:px-6">
               <div className="flex flex-col items-center space-y-4 text-center">
                 <div className="space-y-2">
@@ -39,6 +40,11 @@ export default async function LandingPage() {
                   </p>
                 </div>
               </div>
+            </div>
+          </section>
+          <section className="w-[80%] mx-auto pb-24">
+            <div className="container mx-auto px-4">
+              <DashboardPreview />
             </div>
           </section>
         </main>
