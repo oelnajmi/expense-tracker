@@ -71,7 +71,7 @@ export default function ExpenseDistribution({
         <CardTitle>Expense Distribution</CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="h-[400px]">
+        <div className="h-[300px]">
           <ResponsiveContainer width="100%" height="100%">
             <BarChart
               data={sortedData}
