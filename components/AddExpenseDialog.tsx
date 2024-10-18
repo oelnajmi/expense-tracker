@@ -41,12 +41,16 @@ export default function AddExpenseDialog({
   const [newCategory, setNewCategory] = useState("");
 
   const handleAddExpense = () => {
-    if (name && amount && categoryId) {
+    if (name && amount && (type === "subscription" || categoryId)) {
+      const subscriptionCategory = categories.find(
+        (cat) => cat.name === "Subscription"
+      );
       const newExpense: NewExpense = {
         name,
         amount,
         type,
-        categoryId,
+        categoryId:
+          type === "subscription" ? subscriptionCategory?.id || "" : categoryId,
         subscriptionDay: type === "subscription" ? subscriptionDay : null,
         userId,
       };
@@ -127,51 +131,57 @@ export default function AddExpenseDialog({
             </SelectContent>
           </Select>
         </div>
-        <div className="grid grid-cols-4 items-center gap-4">
-          <Label htmlFor="category" className="text-right">
-            Category
-          </Label>
-          <Select
-            value={categoryId}
-            onValueChange={(value) => setCategoryId(value)}
-          >
-            <SelectTrigger className="col-span-3">
-              <SelectValue placeholder="Select category" />
-            </SelectTrigger>
-            <SelectContent className="bg-white">
-              {categories.map((cat) => (
-                <SelectItem
-                  key={cat.id}
-                  value={cat.id}
-                  className="hover:bg-gray-100"
+        {type === "monthly" && (
+          <>
+            <div className="grid grid-cols-4 items-center gap-4">
+              <Label htmlFor="category" className="text-right">
+                Category
+              </Label>
+              <Select
+                value={categoryId}
+                onValueChange={(value) => setCategoryId(value)}
+              >
+                <SelectTrigger className="col-span-3">
+                  <SelectValue placeholder="Select category" />
+                </SelectTrigger>
+                <SelectContent className="bg-white">
+                  {categories
+                    .filter((cat) => cat.name !== "Subscription")
+                    .map((cat) => (
+                      <SelectItem
+                        key={cat.id}
+                        value={cat.id}
+                        className="hover:bg-gray-100"
+                      >
+                        {cat.name}
+                      </SelectItem>
+                    ))}
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="grid grid-cols-4 items-center gap-4">
+              <Label htmlFor="newCategory" className="text-right">
+                New Category
+              </Label>
+              <div className="col-span-3 flex gap-2">
+                <Input
+                  id="newCategory"
+                  value={newCategory}
+                  onChange={(e) => setNewCategory(e.target.value)}
+                  className="flex-grow"
+                  placeholder="Enter new category"
+                />
+                <Button
+                  className="bg-black text-white"
+                  type="button"
+                  onClick={handleAddCategory}
                 >
-                  {cat.name}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
-        <div className="grid grid-cols-4 items-center gap-4">
-          <Label htmlFor="newCategory" className="text-right">
-            New Category
-          </Label>
-          <div className="col-span-3 flex gap-2">
-            <Input
-              id="newCategory"
-              value={newCategory}
-              onChange={(e) => setNewCategory(e.target.value)}
-              className="flex-grow"
-              placeholder="Enter new category"
-            />
-            <Button
-              className="bg-black text-white"
-              type="button"
-              onClick={handleAddCategory}
-            >
-              Add
-            </Button>
-          </div>
-        </div>
+                  Add
+                </Button>
+              </div>
+            </div>
+          </>
+        )}
         {type === "subscription" && (
           <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="subscriptionDay" className="text-right">

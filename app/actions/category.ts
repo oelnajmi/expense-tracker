@@ -11,6 +11,7 @@ const DEFAULT_CATEGORIES = [
   "Housing",
   "Utilities",
   "Entertainment",
+  "Subscription",
   "Other",
 ];
 
