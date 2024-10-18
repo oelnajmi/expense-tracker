@@ -38,8 +38,10 @@ export default function EditExpenseDialog({
   const [editSubscriptionDay, setEditSubscriptionDay] = useState(
     expense.subscriptionDay || 1
   );
+  const [isOpen, setIsOpen] = useState(false);
 
-  const handleUpdateExpense = () => {
+  const handleUpdateExpense = (e: React.FormEvent) => {
+    e.preventDefault();
     const updatedExpense: Expense = {
       ...expense,
       name: editName,
@@ -49,15 +51,17 @@ export default function EditExpenseDialog({
         expense.type === "subscription" ? editSubscriptionDay : null,
     };
     onUpdateExpense(updatedExpense);
+    setIsOpen(false);
   };
 
   return (
-    <Dialog>
+    <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
         <Button
           variant="ghost"
           size="icon"
           className="text-primary hover:text-primary/90"
+          onClick={() => setIsOpen(true)}
         >
           <Pencil className="h-4 w-4" />
         </Button>
