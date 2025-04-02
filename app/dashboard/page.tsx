@@ -7,6 +7,7 @@ import { getCategories } from "../actions/category";
 import { Expense, Category } from "@/db/schema";
 
 export default async function DashboardPage() {
+  console.log("server");
   const session = await auth();
   let userExpenses: Expense[] = [];
   let userCategories: Category[] = [];
@@ -18,7 +19,7 @@ export default async function DashboardPage() {
 
   return (
     <div className="min-h-screen bg-background">
-      <div className="container mx-auto">
+      <div className="mx-auto p-4">
         <DashboardHeader />
         <Separator className="mb-6 bg-border" />
         <ExpenseDashboard
