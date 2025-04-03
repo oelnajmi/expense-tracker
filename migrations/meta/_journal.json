@@ -36,6 +36,13 @@
       "when": 1729197288232,
       "tag": "0004_famous_stature",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1743691848507,
+      "tag": "0005_warm_maximus",
+      "breakpoints": true
     }
   ]
 }

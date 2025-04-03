@@ -1,23 +1,26 @@
 "use client";
 
 import { useMemo } from "react";
-import { Expense, Category } from "@/db/schema";
+import { Expense, Category, FinancialGoal } from "@/db/schema";
 import { useExpenses } from "@/hooks/useExpenses";
 import { useCategories } from "@/hooks/useCategories";
 import ExpenseListSection from "./ExpenseListSection";
 import ExpenseDistributionSection from "./ExpenseDistributionSection";
 import SubscriptionCalendarSection from "./SubscriptionCalendarSection";
 import FinancialSummarySection from "./FinancialSummarySection";
+import { useFinancialGoals } from "@/hooks/useFinancialGoals";
 
 interface ExpenseDashboardProps {
   initialExpenses: Expense[];
   initialCategories: Category[];
+  initialFinancialGoals: FinancialGoal[];
   userId: string | undefined;
 }
 
 export default function ExpenseDashboard({
   initialExpenses,
   initialCategories,
+  initialFinancialGoals,
   userId,
 }: ExpenseDashboardProps) {
   const {
@@ -28,6 +31,10 @@ export default function ExpenseDashboard({
   } = useExpenses(initialExpenses, userId);
   const { categories, addCategory, setCategories } = useCategories(
     initialCategories,
+    userId
+  );
+  const { goals, handleUpdateGoals } = useFinancialGoals(
+    initialFinancialGoals,
     userId
   );
 
@@ -78,7 +85,12 @@ export default function ExpenseDashboard({
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <ExpenseDistributionSection expenseData={expenseData} />
         <SubscriptionCalendarSection expenses={expenses} />
-        <FinancialSummarySection totalExpenses={totalExpenses} />
+        <FinancialSummarySection
+          totalExpenses={totalExpenses}
+          userId={userId}
+          goals={goals}
+          onUpdateGoals={handleUpdateGoals}
+        />
       </div>
     </div>
   );

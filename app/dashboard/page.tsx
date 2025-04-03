@@ -4,17 +4,20 @@ import ExpenseDashboard from "@/components/ExpenseDashboard";
 import { Separator } from "@/components/ui/separator";
 import { getExpenses } from "../actions/expense";
 import { getCategories } from "../actions/category";
-import { Expense, Category } from "@/db/schema";
+import { Expense, Category, FinancialGoal } from "@/db/schema";
+import { getFinancialGoals } from "../actions/financial-goals";
 
 export default async function DashboardPage() {
   console.log("server");
   const session = await auth();
   let userExpenses: Expense[] = [];
   let userCategories: Category[] = [];
+  let userFinancialGoals: FinancialGoal[] = [];
 
   if (session?.user?.id) {
     userExpenses = await getExpenses(session.user.id);
     userCategories = await getCategories(session.user.id);
+    userFinancialGoals = await getFinancialGoals(session.user.id);
   }
 
   return (
@@ -25,6 +28,7 @@ export default async function DashboardPage() {
         <ExpenseDashboard
           initialExpenses={userExpenses}
           initialCategories={userCategories}
+          initialFinancialGoals={userFinancialGoals}
           userId={session?.user?.id}
         />
       </div>

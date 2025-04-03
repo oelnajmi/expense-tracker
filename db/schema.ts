@@ -122,3 +122,22 @@ export const categories = pgTable("categories", {
 
 export type Category = InferSelectModel<typeof categories>;
 export type NewCategory = InferInsertModel<typeof categories>;
+
+export const financialGoals = pgTable("financial_goals", {
+  id: text("id")
+    .primaryKey()
+    .$defaultFn(() => crypto.randomUUID()),
+  userId: text("userId")
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
+  monthlyIncome: numeric("monthly_income", {
+    precision: 10,
+    scale: 2,
+  }).notNull(),
+  savingsGoal: numeric("savings_goal", { precision: 10, scale: 2 }).notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
+
+export type FinancialGoal = InferSelectModel<typeof financialGoals>;
+export type NewFinancialGoal = InferInsertModel<typeof financialGoals>;
