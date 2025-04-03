@@ -11,9 +11,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { PlusIcon } from "lucide-react";
-import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 
 interface ExpenseListSectionProps {
   expenses: Expense[];
@@ -43,19 +40,12 @@ export default function ExpenseListSection({
         <CardDescription className="text-muted-foreground">
           Total Expenses: ${totalExpenses.toFixed(2)}
         </CardDescription>
-        <Dialog>
-          <DialogTrigger asChild>
-            <Button variant="outline" size="icon" className="text-foreground">
-              <PlusIcon className="h-4 w-4" />
-            </Button>
-          </DialogTrigger>
-          <AddExpenseDialog
-            onAddExpense={onAddExpense}
-            categories={categories}
-            onAddCategory={onAddCategory}
-            userId={userId || ""}
-          />
-        </Dialog>
+        <AddExpenseDialog
+          onAddExpense={onAddExpense}
+          categories={categories}
+          onAddCategory={onAddCategory}
+          userId={userId || ""}
+        />
       </CardHeader>
       <CardContent>
         <ExpenseList

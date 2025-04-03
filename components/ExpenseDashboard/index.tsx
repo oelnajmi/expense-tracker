@@ -75,11 +75,11 @@ export default function ExpenseDashboard({
         onAddCategory={handleAddCategory}
         userId={userId}
       />
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <ExpenseDistributionSection expenseData={expenseData} />
         <SubscriptionCalendarSection expenses={expenses} />
+        <FinancialSummarySection totalExpenses={totalExpenses} />
       </div>
-      <FinancialSummarySection totalExpenses={totalExpenses} />
     </div>
   );
 }

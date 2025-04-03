@@ -42,7 +42,7 @@ export default function FinancialSummary({
   }, [monthlyIncome, savingsPercentage, totalExpenses]);
 
   return (
-    <Card className="mt-4 bg-background border-border">
+    <Card className="bg-background border-border">
       <CardHeader>
         <CardTitle className="text-foreground">Financial Summary</CardTitle>
       </CardHeader>
