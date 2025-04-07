@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo } from "react";
-import { Expense, Category, FinancialGoal } from "@/db/schema";
+import { Expense, Category, FinancialGoal, Investment } from "@/db/schema";
 import { useExpenses } from "@/hooks/useExpenses";
 import { useCategories } from "@/hooks/useCategories";
 import ExpenseListSection from "./ExpenseListSection";
@@ -9,11 +9,15 @@ import ExpenseDistributionSection from "./ExpenseDistributionSection";
 import SubscriptionCalendarSection from "./SubscriptionCalendarSection";
 import FinancialSummarySection from "./FinancialSummarySection";
 import { useFinancialGoals } from "@/hooks/useFinancialGoals";
+import { ScrollArea } from "../ui/scroll-area";
+import InvestmentSection from "./InvestmentSection";
+import { useInvestments } from "@/hooks/use-investments";
 
 interface ExpenseDashboardProps {
   initialExpenses: Expense[];
   initialCategories: Category[];
   initialFinancialGoals: FinancialGoal[];
+  initialInvestments: Investment[];
   userId: string | undefined;
 }
 
@@ -21,6 +25,7 @@ export default function ExpenseDashboard({
   initialExpenses,
   initialCategories,
   initialFinancialGoals,
+  initialInvestments,
   userId,
 }: ExpenseDashboardProps) {
   const {
@@ -37,6 +42,13 @@ export default function ExpenseDashboard({
     initialFinancialGoals,
     userId
   );
+  const {
+    investments,
+    isLoading,
+    handleAddInvestment,
+    handleUpdateInvestment,
+    handleDeleteInvestment,
+  } = useInvestments(initialInvestments, userId);
 
   const handleAddCategory = (newCategory: string) => {
     if (userId) {
@@ -71,18 +83,8 @@ export default function ExpenseDashboard({
   }, [expenses, categories]);
 
   return (
-    <div className="grid gap-4">
-      <ExpenseListSection
-        expenses={expenses}
-        totalExpenses={totalExpenses}
-        onAddExpense={handleAddExpense}
-        onUpdateExpense={handleUpdateExpense}
-        onDeleteExpense={handleDeleteExpense}
-        categories={categories}
-        onAddCategory={handleAddCategory}
-        userId={userId}
-      />
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+    <div className="space-y-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
         <ExpenseDistributionSection expenseData={expenseData} />
         <SubscriptionCalendarSection expenses={expenses} />
         <FinancialSummarySection
@@ -91,6 +93,33 @@ export default function ExpenseDashboard({
           goals={goals}
           onUpdateGoals={handleUpdateGoals}
         />
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+        <div className="">
+          <ScrollArea className="rounded-md border h-96">
+            <ExpenseListSection
+              expenses={expenses}
+              totalExpenses={totalExpenses}
+              onAddExpense={handleAddExpense}
+              onUpdateExpense={handleUpdateExpense}
+              onDeleteExpense={handleDeleteExpense}
+              categories={categories}
+              onAddCategory={handleAddCategory}
+              userId={userId}
+            />
+          </ScrollArea>
+        </div>
+        <div className="">
+          <InvestmentSection
+            investments={investments}
+            isLoading={isLoading}
+            onAddInvestment={handleAddInvestment}
+            onUpdateInvestment={handleUpdateInvestment}
+            onDeleteInvestment={handleDeleteInvestment}
+            userId={userId}
+          />
+        </div>
       </div>
     </div>
   );

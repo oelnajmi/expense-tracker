@@ -7,6 +7,7 @@ import {
   timestamp,
   primaryKey,
   numeric,
+  pgEnum,
 } from "drizzle-orm/pg-core";
 import type { AdapterAccountType } from "next-auth/adapters";
 
@@ -141,3 +142,35 @@ export const financialGoals = pgTable("financial_goals", {
 
 export type FinancialGoal = InferSelectModel<typeof financialGoals>;
 export type NewFinancialGoal = InferInsertModel<typeof financialGoals>;
+
+export const investmentFrequencyEnum = pgEnum("investment_frequency", [
+  "weekly",
+  "biweekly",
+  "monthly",
+]);
+
+export const investments = pgTable("investment", {
+  id: text("id")
+    .primaryKey()
+    .$defaultFn(() => crypto.randomUUID()),
+  userId: text("userId")
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
+  name: text("name").notNull(),
+  initialAmount: numeric("initial_amount", {
+    precision: 10,
+    scale: 2,
+  }).notNull(),
+  yearlyReturn: numeric("yearly_return", { precision: 5, scale: 2 }).notNull(), // Stored as percentage (e.g., 7.5 for 7.5%)
+  recurringAmount: numeric("recurring_amount", {
+    precision: 10,
+    scale: 2,
+  }).notNull(),
+  frequency: investmentFrequencyEnum("frequency").notNull(),
+  years: integer("years").notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
+
+export type Investment = InferSelectModel<typeof investments>;
+export type NewInvestment = InferInsertModel<typeof investments>;
